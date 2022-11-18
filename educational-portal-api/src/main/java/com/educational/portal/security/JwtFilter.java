@@ -18,8 +18,6 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class JwtFilter extends GenericFilterBean {
 
-
-
     private final JwtProvider jwtProvider;
     private final CustomUserDetailsService customUserDetailsService;
 

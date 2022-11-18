@@ -30,8 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final JwtFilter jwtFilter;
 
 	public SecurityConfig(UserDetailsService userDetailsService,
-						  JwtFilter jwtFilter
-	) {
+						  JwtFilter jwtFilter) {
 		this.userDetailsService = userDetailsService;
 		this.jwtFilter = jwtFilter;
 	}
