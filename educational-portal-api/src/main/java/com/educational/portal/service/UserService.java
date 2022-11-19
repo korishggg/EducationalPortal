@@ -74,4 +74,16 @@ public class UserService {
 	public List<?> getUnapprovedUsers() {
 		return userRepository.findUsersByIsApproved(false);
 	}
+
+
+	public User approveUserById(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (optionalUser.isPresent()){
+			User user = optionalUser.get();
+			user.setIsApproved(true);
+			return userRepository.save(user);
+		}else{
+			throw new RuntimeException("User with this id "+ id + " is not found" );
+		}
+	}
 }

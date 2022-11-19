@@ -1,12 +1,12 @@
 package com.educational.portal.web;
 
+import com.educational.portal.domain.entity.User;
 import com.educational.portal.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/manager")
@@ -23,6 +23,11 @@ public class ManagerController {
         return ResponseEntity.ok(unapprovedUsers);
     }
 
+    @PostMapping("/approveUser/{id}")
+    public ResponseEntity<User> approveUser(@PathVariable Long id) {
+        User approvedUser = userService.approveUserById(id);
+        return ResponseEntity.ok(approvedUser);
+    }
 
 
 }
