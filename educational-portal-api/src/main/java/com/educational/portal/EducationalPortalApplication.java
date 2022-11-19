@@ -49,6 +49,5 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		userRepository.save(user2);
 		userRepository.save(user3);
 		userRepository.save(user4);
-
 	}
 }

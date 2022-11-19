@@ -60,7 +60,6 @@ public class UserService {
 							 registrationRequest.getPhone(),
 							 userRole);
 		userRepository.save(user);
-
 		System.out.println("user with this email" + user.getEmail() +" is saved");
 	}
 
@@ -75,15 +74,12 @@ public class UserService {
 		return userRepository.findUsersByIsApproved(false);
 	}
 
-
 	public User approveUserById(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id);
-		if (optionalUser.isPresent()){
-			User user = optionalUser.get();
-			user.setIsApproved(true);
-			return userRepository.save(user);
-		}else{
-			throw new RuntimeException("User with this id "+ id + " is not found" );
-		}
+		return userRepository.findById(id)
+							 .map(user -> {
+								 user.setIsApproved(true);
+								 return userRepository.save(user);
+							 })
+							 .orElseThrow(() -> new RuntimeException("User with this id " + id + " is not found"));
 	}
 }

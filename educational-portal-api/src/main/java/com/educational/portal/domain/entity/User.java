@@ -1,6 +1,10 @@
 package com.educational.portal.domain.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -95,5 +99,4 @@ public class User extends BaseEntity {
 	public void setIsApproved(boolean isApproved) {
 		this.isApproved = isApproved;
 	}
-
 }
