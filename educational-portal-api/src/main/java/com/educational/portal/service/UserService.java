@@ -12,6 +12,7 @@ import com.educational.portal.util.Constants;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,6 +68,22 @@ public class UserService {
 		Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()) {
 			throw new RuntimeException("User with this email " + email + " already exists");
+		}
+	}
+
+	public List<?> getUnapprovedUsers() {
+		return userRepository.findUsersByIsApproved(false);
+	}
+
+
+	public User approveUserById(Long id) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (optionalUser.isPresent()){
+			User user = optionalUser.get();
+			user.setIsApproved(true);
+			return userRepository.save(user);
+		}else{
+			throw new RuntimeException("User with this id "+ id + " is not found" );
 		}
 	}
 }

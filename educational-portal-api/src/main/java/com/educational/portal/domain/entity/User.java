@@ -1,9 +1,6 @@
 package com.educational.portal.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -21,6 +18,9 @@ public class User extends BaseEntity {
 	private String email;
 	// TODO add validation for phone || WRITE OWN ANNOTATION || CREATE STORY
 	private String phone;
+
+	@Column(name ="isApproved")
+	private boolean isApproved;
 
 	@ManyToOne
 	@JoinColumn(name = "role_id")
@@ -87,4 +87,13 @@ public class User extends BaseEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public boolean isApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(boolean isApproved) {
+		this.isApproved = isApproved;
+	}
+
 }
