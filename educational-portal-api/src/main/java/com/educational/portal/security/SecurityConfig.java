@@ -3,7 +3,6 @@ package com.educational.portal.security;
 import com.educational.portal.util.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-//TODO fix Deprecated solution
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -58,11 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				)
 				.and()
 				.authorizeRequests()
-				.antMatchers(HttpMethod.GET,"/users/1").hasAnyAuthority(Constants.ADMIN_ROLE)
-				.antMatchers(HttpMethod.GET,"/users/2").hasAnyAuthority(Constants.MANAGER_ROLE)
-				.antMatchers(HttpMethod.GET,"/users/3").hasAnyAuthority(Constants.INSTRUCTOR_ROLE)
-				.antMatchers(HttpMethod.GET,"/users/4").hasAnyAuthority(Constants.USER_ROLE)
 				.antMatchers("/manager/**").hasAnyAuthority(Constants.MANAGER_ROLE)
+				.antMatchers("/admin/**").hasAnyAuthority(Constants.ADMIN_ROLE)
 				.antMatchers("/register", "/auth").permitAll()
 				.anyRequest().authenticated()
 				.and()
