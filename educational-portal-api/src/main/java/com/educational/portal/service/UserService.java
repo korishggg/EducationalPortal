@@ -8,14 +8,17 @@ import com.educational.portal.domain.entity.User;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.security.JwtProvider;
 import com.educational.portal.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
@@ -58,7 +61,7 @@ public class UserService {
 							 registrationRequest.getPhone(),
 							 userRole);
 		userRepository.save(user);
-		System.out.println("user with this email" + user.getEmail() +" is saved");
+		LOGGER.info("user with this email" + user.getEmail() +" is saved");
 	}
 
 	private void validateIsUserExists(String email) {
@@ -78,7 +81,7 @@ public class UserService {
 			var user = userOptional.get();
 			user.setIsApproved(true);
 			userRepository.save(user);
-			System.out.println("User with this id " + id + " is approved");
+			LOGGER.info("User with this id " + id + " is approved");
 		} else {
 			throw new RuntimeException("User with this id " + id + " is not found");
 		}
@@ -92,7 +95,7 @@ public class UserService {
 				var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
 				user.setRole(role);
 				userRepository.save(user);
-				System.out.println("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
+				LOGGER.info("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
 			} else {
 				throw new RuntimeException("Current user cannot assign another administrator to the manager role");
 			}
@@ -109,7 +112,7 @@ public class UserService {
 				var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
 				user.setRole(role);
 				userRepository.save(user);
-				System.out.println("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
+				LOGGER.info("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
 			}else {
 				throw new RuntimeException("User with this id " + id + " is not found or don't have User role");
 			}

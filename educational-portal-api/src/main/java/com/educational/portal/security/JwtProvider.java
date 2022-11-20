@@ -1,6 +1,13 @@
 package com.educational.portal.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +17,7 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
 
     @Value("$(jwt.secret)")
     private String jwtSecret;
@@ -28,15 +36,15 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException expEx) {
-            System.out.println("Token expired");
+            LOGGER.error("Token expired");
         } catch (UnsupportedJwtException unsEx) {
-            System.out.println("Unsupported jwt");
+            LOGGER.error("Unsupported jwt");
         } catch (MalformedJwtException mjEx) {
-            System.out.println("Malformed jwt");
+            LOGGER.error("Malformed jwt");
         } catch (SignatureException sEx) {
-            System.out.println("Invalid signature");
+            LOGGER.error("Invalid signature");
         } catch (Exception e) {
-            System.out.println("invalid token");
+            LOGGER.error("invalid token");
         }
         return false;
     }
