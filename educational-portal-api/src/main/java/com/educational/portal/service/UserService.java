@@ -5,7 +5,6 @@ import com.educational.portal.domain.dto.AuthResponse;
 import com.educational.portal.domain.dto.RegistrationRequest;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
-import com.educational.portal.repository.RoleRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.security.JwtProvider;
 import com.educational.portal.util.Constants;
@@ -19,17 +18,17 @@ import java.util.Optional;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final RoleService roleService;
 	private final JwtProvider jwtProvider;
 
 	public UserService(UserRepository userRepository,
-					   RoleRepository roleRepository,
 					   PasswordEncoder passwordEncoder,
+					   RoleService roleService,
 					   JwtProvider jwtProvider) {
 		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.roleService = roleService;
 		this.jwtProvider = jwtProvider;
 	}
 
@@ -50,8 +49,7 @@ public class UserService {
 	public void registerUser(RegistrationRequest registrationRequest) {
 		validateIsUserExists(registrationRequest.getEmail());
 
-		Role userRole = roleRepository.findByName(Constants.USER_ROLE)
-									  .orElseThrow(() -> new RuntimeException(Constants.USER_ROLE + "IS NOT FOUND"));
+		Role userRole = roleService.getRoleByName(Constants.USER_ROLE);
 		// TODO add mapper
 		User user = new User(registrationRequest.getFirstName(),
 							 registrationRequest.getLastName(),
@@ -74,12 +72,42 @@ public class UserService {
 		return userRepository.findUsersByIsApproved(false);
 	}
 
-	public User approveUserById(Long id) {
-		return userRepository.findById(id)
-							 .map(user -> {
-								 user.setIsApproved(true);
-								 return userRepository.save(user);
-							 })
-							 .orElseThrow(() -> new RuntimeException("User with this id " + id + " is not found"));
+	public void approveUserById(Long id) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (userOptional.isPresent()) {
+			var user = userOptional.get();
+			user.setIsApproved(true);
+			userRepository.save(user);
+			System.out.println("User with this id " + id + " is approved");
+		} else {
+			throw new RuntimeException("User with this id " + id + " is not found");
+		}
+	}
+
+	public void assignManagerByUserId(Long id) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (userOptional.isPresent()) {
+			var user = userOptional.get();
+			if (this.verifyUserDoesNotHaveThisRoles(user, Constants.ADMIN_ROLE)) {
+				var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
+				user.setRole(role);
+				userRepository.save(user);
+				System.out.println("User with this id" + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
+			} else {
+				throw new RuntimeException("Current user cannot assign another administrator to the manager role");
+			}
+		} else {
+			throw new RuntimeException("User with this id " + id + " is not found");
+		}
+	}
+
+	private boolean verifyUserDoesNotHaveThisRoles(User user, String... roleNames) {
+		String userRoleName = user.getRole().getName();
+		for (String role: roleNames) {
+			if (role.equals(userRoleName)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
