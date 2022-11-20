@@ -88,7 +88,7 @@ public class UserService {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (userOptional.isPresent()) {
 			var user = userOptional.get();
-			if (this.verifyUserDoesNotHaveThisRoles(user, Constants.ADMIN_ROLE)) {
+			if (!user.getRole().getName().equals(Constants.ADMIN_ROLE)) {
 				var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
 				user.setRole(role);
 				userRepository.save(user);
@@ -101,30 +101,11 @@ public class UserService {
 		}
 	}
 
-	private boolean verifyUserDoesNotHaveThisRoles(User user, String... roleNames) {
-		String userRoleName = user.getRole().getName();
-		for (String role: roleNames) {
-			if (role.equals(userRoleName)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	public boolean verifyUserDoesHaveUserRole(User user, String... roleNames){
-		String userRoleName = user.getRole().getName();
-		for (String role : roleNames) {
-			if (role.equals(userRoleName)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void assignInstructorByUserId(Long id) {
 		Optional<User> userOptional = userRepository.findById(id);
 		if(userOptional.isPresent()) {
 			var user = userOptional.get();
-			if(this.verifyUserDoesHaveUserRole(user, Constants.USER_ROLE)) {
+			if(user.getRole().getName().equals(Constants.USER_ROLE)) {
 				var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
 				user.setRole(role);
 				userRepository.save(user);
