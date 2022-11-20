@@ -1,6 +1,7 @@
 package com.educational.portal.web;
 
 import com.educational.portal.service.UserService;
+import com.educational.portal.util.Constants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,5 +31,10 @@ public class ManagerController {
     public ResponseEntity<String> approveUser(@PathVariable Long id) {
         userService.approveUserById(id);
         return ResponseEntity.ok("User with this id = " + id + " is approved");
+    }
+    @PostMapping("/assignInstructor/{id}")
+    public ResponseEntity<?> asignInstructor(@PathVariable Long id){
+        userService.assignInstructorByUserId(id);
+        return ResponseEntity.ok("User with this id = " + id + " been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
     }
 }

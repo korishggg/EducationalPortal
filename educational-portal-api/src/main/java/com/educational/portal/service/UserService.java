@@ -88,11 +88,11 @@ public class UserService {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (userOptional.isPresent()) {
 			var user = userOptional.get();
-			if (this.verifyUserDoesNotHaveThisRoles(user, Constants.ADMIN_ROLE)) {
+			if (!user.getRole().getName().equals(Constants.ADMIN_ROLE)) {
 				var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
 				user.setRole(role);
 				userRepository.save(user);
-				System.out.println("User with this id" + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
+				System.out.println("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
 			} else {
 				throw new RuntimeException("Current user cannot assign another administrator to the manager role");
 			}
@@ -101,13 +101,18 @@ public class UserService {
 		}
 	}
 
-	private boolean verifyUserDoesNotHaveThisRoles(User user, String... roleNames) {
-		String userRoleName = user.getRole().getName();
-		for (String role: roleNames) {
-			if (role.equals(userRoleName)) {
-				return false;
+	public void assignInstructorByUserId(Long id) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if(userOptional.isPresent()) {
+			var user = userOptional.get();
+			if(user.getRole().getName().equals(Constants.USER_ROLE)) {
+				var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
+				user.setRole(role);
+				userRepository.save(user);
+				System.out.println("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
+			}else {
+				throw new RuntimeException("User with this id " + id + " is not found or don't have User role");
 			}
 		}
-		return true;
 	}
 }
