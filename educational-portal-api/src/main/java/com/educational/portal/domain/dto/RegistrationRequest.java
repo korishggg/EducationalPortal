@@ -1,5 +1,9 @@
 package com.educational.portal.domain.dto;
 
+import com.educational.portal.domain.entity.Role;
+import com.educational.portal.domain.entity.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 public class RegistrationRequest {
 
 	private String firstName;
@@ -54,5 +58,16 @@ public class RegistrationRequest {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public static User convertRegistrationRequestToUser(RegistrationRequest registrationRequest,
+														Role userRole,
+														PasswordEncoder passwordEncoder) {
+		return new User(registrationRequest.getFirstName(),
+				registrationRequest.getLastName(),
+				passwordEncoder.encode(registrationRequest.getPassword()),
+				registrationRequest.getEmail(),
+				registrationRequest.getPhone(),
+				userRole);
 	}
 }

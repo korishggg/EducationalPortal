@@ -3,6 +3,7 @@ package com.educational.portal.service;
 import com.educational.portal.domain.dto.AuthRequest;
 import com.educational.portal.domain.dto.AuthResponse;
 import com.educational.portal.domain.dto.RegistrationRequest;
+import com.educational.portal.domain.dto.UserDto;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.repository.UserRepository;
@@ -12,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,13 +56,8 @@ public class UserService {
 		validateIsUserExists(registrationRequest.getEmail());
 
 		Role userRole = roleService.getRoleByName(Constants.USER_ROLE);
-		// TODO add mapper
-		User user = new User(registrationRequest.getFirstName(),
-							 registrationRequest.getLastName(),
-							 passwordEncoder.encode(registrationRequest.getPassword()),
-							 registrationRequest.getEmail(),
-							 registrationRequest.getPhone(),
-							 userRole);
+		User user = RegistrationRequest.convertRegistrationRequestToUser(registrationRequest, userRole, passwordEncoder);
+
 		userRepository.save(user);
 		LOGGER.info("user with this email" + user.getEmail() +" is saved");
 	}
@@ -71,8 +69,11 @@ public class UserService {
 		}
 	}
 
-	public List<?> getUnapprovedUsers() {
-		return userRepository.findUsersByIsApproved(false);
+	public List<UserDto> getUnapprovedUsers() {
+		return userRepository.findUsersByIsApproved(false)
+							 .stream()
+							 .map(UserDto::convertUserToUserDto)
+							 .toList();
 	}
 
 	public void approveUserById(Long id) {

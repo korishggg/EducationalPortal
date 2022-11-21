@@ -1,5 +1,6 @@
 package com.educational.portal.web;
 
+import com.educational.portal.domain.dto.UserDto;
 import com.educational.portal.service.UserService;
 import com.educational.portal.util.Constants;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class ManagerController {
     }
 
     @GetMapping("/unapprovedUsers")
-    public ResponseEntity<List<?>> getUnapprovedUsers() {
-        List<?> unapprovedUsers = userService.getUnapprovedUsers();
+    public ResponseEntity<List<UserDto>> getUnapprovedUsers() {
+        List<UserDto> unapprovedUsers = userService.getUnapprovedUsers();
         return ResponseEntity.ok(unapprovedUsers);
     }
 
