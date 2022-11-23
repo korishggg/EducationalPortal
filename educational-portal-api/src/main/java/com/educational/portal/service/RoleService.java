@@ -1,6 +1,7 @@
 package com.educational.portal.service;
 
 import com.educational.portal.domain.entity.Role;
+import com.educational.portal.exception.NotFoundException;
 import com.educational.portal.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,6 @@ public class RoleService {
 
 	public Role getRoleByName(String roleName) {
 		return roleRepository.findByName(roleName)
-							 .orElseThrow(() -> new RuntimeException("Role with this name= " + roleName +" is not found"));
+							 .orElseThrow(() -> new NotFoundException("Role with this name= " + roleName +" is not found"));
 	}
 }

@@ -6,6 +6,10 @@ import com.educational.portal.domain.dto.RegistrationRequest;
 import com.educational.portal.domain.dto.UserDto;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
+import com.educational.portal.exception.AlreadyExistsException;
+import com.educational.portal.exception.IncorrectPasswordException;
+import com.educational.portal.exception.NotEnoughPermissionException;
+import com.educational.portal.exception.NotFoundException;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.security.JwtProvider;
 import com.educational.portal.util.Constants;
@@ -14,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +44,11 @@ public class UserService {
 	public AuthResponse signIn(AuthRequest authRequest) {
 		User user = userRepository.findByEmail(authRequest.getEmail())
 								  .orElseThrow(() -> {
-									  throw new RuntimeException("User with this email " + authRequest.getEmail() +" is not found");
+									  throw new NotFoundException("User with this email " + authRequest.getEmail() +" is not found");
 								  });
 		boolean isPasswordMatched = passwordEncoder.matches(authRequest.getPassword(), user.getPassword());
 		if (!isPasswordMatched) {
-			throw new RuntimeException("User with this email " + authRequest.getEmail() +" typed incorrect password");
+			throw new IncorrectPasswordException("User with this email " + authRequest.getEmail() +" typed incorrect password");
 		}
 
 		String token = jwtProvider.generateToken(user.getEmail());
@@ -65,7 +68,7 @@ public class UserService {
 	private void validateIsUserExists(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()) {
-			throw new RuntimeException("User with this email " + email + " already exists");
+			throw new AlreadyExistsException("User with this email " + email + " already exists");
 		}
 	}
 
@@ -84,7 +87,7 @@ public class UserService {
 			userRepository.save(user);
 			LOGGER.info("User with this id " + id + " is approved");
 		} else {
-			throw new RuntimeException("User with this id " + id + " is not found");
+			throw new NotFoundException("User with this id " + id + " is not found");
 		}
 	}
 
@@ -98,10 +101,10 @@ public class UserService {
 				userRepository.save(user);
 				LOGGER.info("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
 			} else {
-				throw new RuntimeException("Current user cannot assign another administrator to the manager role");
+				throw new NotEnoughPermissionException("Current user cannot assign another administrator to the manager role");
 			}
 		} else {
-			throw new RuntimeException("User with this id " + id + " is not found");
+			throw new NotFoundException("User with this id " + id + " is not found");
 		}
 	}
 
@@ -115,7 +118,7 @@ public class UserService {
 				userRepository.save(user);
 				LOGGER.info("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
 			}else {
-				throw new RuntimeException("User with this id " + id + " is not found or don't have User role");
+				throw new NotFoundException("User with this id " + id + " is not found or don't have User role");
 			}
 		}
 	}
