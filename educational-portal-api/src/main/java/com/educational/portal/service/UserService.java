@@ -1,9 +1,6 @@
 package com.educational.portal.service;
 
-import com.educational.portal.domain.dto.AuthRequest;
-import com.educational.portal.domain.dto.AuthResponse;
-import com.educational.portal.domain.dto.RegistrationRequest;
-import com.educational.portal.domain.dto.UserDto;
+import com.educational.portal.domain.dto.*;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
@@ -52,7 +49,8 @@ public class UserService {
 		}
 
 		String token = jwtProvider.generateToken(user.getEmail());
-		return new AuthResponse(token);
+		String refreshToken = jwtProvider.refreshToken(user.getEmail());
+		return new AuthResponse(token, refreshToken);
 	}
 
 	public void registerUser(RegistrationRequest registrationRequest) {
@@ -121,5 +119,17 @@ public class UserService {
 				throw new NotFoundException("User with this id " + id + " is not found or don't have User role");
 			}
 		}
+	}
+
+	public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+		String refreshToken = refreshTokenRequest.getRefreshToken();
+		boolean isTokenValid = jwtProvider.validateToken(refreshToken);
+		if(isTokenValid) {
+			String email = jwtProvider.getEmailFromToken(refreshToken);
+			String authRefreshToken = jwtProvider.refreshToken(email);
+			String authToken = jwtProvider.generateToken(email);
+			return new AuthResponse(authToken,authRefreshToken);
+		}
+		throw new IncorrectPasswordException("This token is not valid");
 	}
 }
