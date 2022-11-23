@@ -54,5 +54,14 @@ public class ExceptionHandlers {
         );
         return new ResponseEntity<>(notEnoughPermissionExp, notPermission);
     }
-
+    @ExceptionHandler(IncorrectParamException.class)
+    ResponseEntity<Object> handleIncorrectParamException(IncorrectParamException incorrectParamException) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ExceptionValues incorrectParamExp = new ExceptionValues(
+                incorrectParamException.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(incorrectParamExp, badRequest);
+    }
 }

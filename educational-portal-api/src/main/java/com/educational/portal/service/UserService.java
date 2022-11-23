@@ -130,6 +130,6 @@ public class UserService {
 			String authToken = jwtProvider.generateToken(email);
 			return new AuthResponse(authToken,authRefreshToken);
 		}
-		throw new RuntimeException("This token is not valid");
+		throw new IncorrectPasswordException("This token is not valid");
 	}
 }
