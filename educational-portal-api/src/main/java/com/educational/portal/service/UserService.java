@@ -52,7 +52,8 @@ public class UserService {
 		}
 
 		String token = jwtProvider.generateToken(user.getEmail());
-		return new AuthResponse(token);
+		String refreshToken = jwtProvider.refreshToken(user.getEmail());
+		return new AuthResponse(token, refreshToken);
 	}
 
 	public void registerUser(RegistrationRequest registrationRequest) {

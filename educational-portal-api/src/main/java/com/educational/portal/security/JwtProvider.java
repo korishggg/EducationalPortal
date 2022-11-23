@@ -19,16 +19,31 @@ import java.util.Date;
 public class JwtProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
 
-    @Value("$(jwt.secret)")
+    @Value("${tokenExpiration}")
+    private Integer tokenExpiration;
+    @Value("${refreshTokenExpiration}")
+    private Integer refreshTokenExpiration;
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
+    public JwtProvider() {
+    }
+
     public String generateToken(String email) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return this.generateToken(email, tokenExpiration);
+    }
+
+    public String refreshToken(String email) {
+        return this.generateToken(email, refreshTokenExpiration);
+    }
+
+    private String generateToken(String email, Integer expirationDate) {
+        Date date = Date.from(LocalDate.now().plusDays(expirationDate).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
-                   .setSubject(email)
-                   .setExpiration(date)
-                   .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                   .compact();
+                .setSubject(email)
+                .setExpiration(date)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
@@ -51,9 +66,9 @@ public class JwtProvider {
 
     public String getLoginFromToken(String token) {
         return Jwts.parser()
-                   .setSigningKey(jwtSecret)
-                   .parseClaimsJws(token)
-                   .getBody()
-                   .getSubject();
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
