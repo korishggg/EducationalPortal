@@ -2,6 +2,7 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.AuthRequest;
 import com.educational.portal.domain.dto.AuthResponse;
+import com.educational.portal.domain.dto.RefreshTokenRequest;
 import com.educational.portal.domain.dto.RegistrationRequest;
 import com.educational.portal.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,11 @@ public class AuthController {
     @PostMapping("/auth")
     public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest) {
         AuthResponse response = userService.signIn(authRequest);
+        return ResponseEntity.ok().body(response);
+    }
+    @PostMapping("/refreshToken")
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        AuthResponse response = userService.refreshToken(refreshTokenRequest);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -64,7 +64,7 @@ public class JwtProvider {
         return false;
     }
 
-    public String getLoginFromToken(String token) {
+    public String getEmailFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
