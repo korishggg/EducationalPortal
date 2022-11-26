@@ -2,6 +2,7 @@ package com.educational.portal.domain.dto;
 
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
+import com.educational.portal.validation.ContactNumberConstraint;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class RegistrationRequest {
@@ -10,6 +11,7 @@ public class RegistrationRequest {
 	private String lastName;
 	private String password;
 	private String email;
+	@ContactNumberConstraint
 	private String phone;
 
 	public RegistrationRequest(String firstName, String lastName, String password, String email, String phone) {
