@@ -2,13 +2,8 @@ package com.educational.portal.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
-
-public class ContactNumberValidator implements
-        ConstraintValidator<ContactNumberConstraint, String> {
+public class ContactNumberValidator implements ConstraintValidator<ContactNumberConstraint, String> {
 
     @Override
     public void initialize(ContactNumberConstraint contactNumber) {

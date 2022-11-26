@@ -1,8 +1,12 @@
 package com.educational.portal.domain.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class AuthRequest {
 
+	@NotBlank(message = "email should not be empty")
 	private String email;
+	@NotBlank(message = "password should not be empty")
 	private String password;
 
 	public AuthRequest(String email, String password) {

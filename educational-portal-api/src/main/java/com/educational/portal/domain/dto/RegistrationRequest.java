@@ -5,13 +5,22 @@ import com.educational.portal.domain.entity.User;
 import com.educational.portal.validation.ContactNumberConstraint;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class RegistrationRequest {
 
+	@NotBlank(message = "first name should not be null or empty")
 	private String firstName;
+	@NotBlank(message = "last name should not be null or empty")
 	private String lastName;
+	@NotBlank(message = "password should not be null or empty")
 	private String password;
+	@Email(message = "Incorrect email syntax")
+	@NotBlank(message = "email should not be null or empty")
 	private String email;
 	@ContactNumberConstraint
+	@NotBlank(message = "phone number should not be null or empty")
 	private String phone;
 
 	public RegistrationRequest(String firstName, String lastName, String password, String email, String phone) {
