@@ -17,16 +17,8 @@ public class ContactNumberValidator implements
     @Override
     public boolean isValid(String phone,
                            ConstraintValidatorContext cxt) {
-        return phone != null && phone.matches("[0-9]+")
+        return phone != null && phone.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
                 && (phone.length() > 8) && (phone.length() < 14);
-    }
-    public void whenMatchesTenDigitsNumberPrefix_thenCorrect() {
-        Pattern pattern = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
-        Matcher matcher = pattern.matcher("+111 (202) 555-0125");
-
-        assertTrue(matcher.matches());
-    }
-    private void assertTrue(boolean matches) {
     }
 
 }
