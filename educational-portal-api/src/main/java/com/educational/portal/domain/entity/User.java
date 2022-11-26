@@ -1,5 +1,7 @@
 package com.educational.portal.domain.entity;
 
+import com.educational.portal.validation.ContactNumberConstraint;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,9 +22,8 @@ public class User extends BaseEntity {
 	private String password;
 	@Email
 	private String email;
-	// TODO add validation for phone || WRITE OWN ANNOTATION || CREATE STORY
+	@ContactNumberConstraint
 	private String phone;
-
 	@Column(name ="isApproved")
 	private boolean isApproved;
 
