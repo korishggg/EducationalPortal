@@ -1,7 +1,9 @@
 package com.educational.portal;
 
+import com.educational.portal.domain.entity.Category;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
+import com.educational.portal.repository.CategoryRepository;
 import com.educational.portal.repository.RoleRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.util.Constants;
@@ -16,11 +18,16 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final CategoryRepository categoryRepository;
 
-	public EducationalPortalApplication(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+	public EducationalPortalApplication(UserRepository userRepository,
+										RoleRepository roleRepository,
+										PasswordEncoder passwordEncoder,
+										CategoryRepository categoryRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.categoryRepository = categoryRepository;
 	}
 
 	public static void main(String[] args) {
@@ -29,6 +36,11 @@ public class EducationalPortalApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		addUsersAndRoles();
+		addCategories();
+	}
+
+	private void addUsersAndRoles() {
 		// for testing we create 4 basic roles and 4 users
 		var adminRole = new Role(Constants.ADMIN_ROLE);
 		var managerRole = new Role(Constants.MANAGER_ROLE);
@@ -49,5 +61,29 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		userRepository.save(user2);
 		userRepository.save(user3);
 		userRepository.save(user4);
+	}
+
+	private void addCategories() {
+		User user = userRepository.findByEmail("email1@gmail.com").get();
+		// for testing we create categories and sub categories
+		Category category1 = new Category("Software", user);
+		Category subCategory1 = new Category("Development", category1, user);
+		Category subCategory2 = new Category("UI Design", category1, user);
+		Category subCategory3 = new Category("Testing", category1, user);
+
+		categoryRepository.save(category1);
+		categoryRepository.save(subCategory1);
+		categoryRepository.save(subCategory2);
+		categoryRepository.save(subCategory3);
+
+		Category category2 = new Category("Assembly");
+		Category subCategory4 = new Category("TV Assembly", category2, user);
+		Category subCategory5 = new Category("Monitor Pipeline", subCategory4, user);
+		Category subCategory6 = new Category("General Pipeline", subCategory4, user);
+
+		categoryRepository.save(category2);
+		categoryRepository.save(subCategory4);
+		categoryRepository.save(subCategory5);
+		categoryRepository.save(subCategory6);
 	}
 }

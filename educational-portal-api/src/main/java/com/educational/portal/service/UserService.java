@@ -39,10 +39,7 @@ public class UserService {
 	}
 
 	public AuthResponse signIn(AuthRequest authRequest) {
-		User user = userRepository.findByEmail(authRequest.getEmail())
-								  .orElseThrow(() -> {
-									  throw new NotFoundException("User with this email " + authRequest.getEmail() +" is not found");
-								  });
+		User user = findByEmail(authRequest.getEmail());
 		boolean isPasswordMatched = passwordEncoder.matches(authRequest.getPassword(), user.getPassword());
 		if (!isPasswordMatched) {
 			throw new IncorrectPasswordException("User with this email " + authRequest.getEmail() +" typed incorrect password");
@@ -131,5 +128,12 @@ public class UserService {
 			return new AuthResponse(authToken,authRefreshToken);
 		}
 		throw new IncorrectPasswordException("This token is not valid");
+	}
+
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email)
+							 .orElseThrow(() -> {
+								 throw new NotFoundException("User with this email " + email + " is not found");
+							 });
 	}
 }

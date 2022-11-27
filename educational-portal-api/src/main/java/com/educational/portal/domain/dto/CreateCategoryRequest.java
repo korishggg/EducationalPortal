@@ -9,10 +9,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
+public class CreateCategoryRequest {
 
-	@NotBlank(message = "email should not be empty")
-	private String email;
-	@NotBlank(message = "password should not be empty")
-	private String password;
+	@NotBlank(message = "category should not be empty")
+	private String name;
 }
