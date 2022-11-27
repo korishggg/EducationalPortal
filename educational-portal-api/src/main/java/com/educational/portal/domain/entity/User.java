@@ -31,6 +31,9 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	@Column(name = "IBAN")
+	private String iban;
+
 	public User() {
 		super();
 	}
@@ -99,5 +102,13 @@ public class User extends BaseEntity {
 
 	public void setIsApproved(boolean isApproved) {
 		this.isApproved = isApproved;
+	}
+
+	public String getIban() {
+		return iban;
+	}
+
+	public void setIban(String iban) {
+		this.iban = iban;
 	}
 }

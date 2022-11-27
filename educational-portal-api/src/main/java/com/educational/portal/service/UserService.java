@@ -1,10 +1,16 @@
 package com.educational.portal.service;
 
-import com.educational.portal.domain.dto.*;
+import com.educational.portal.domain.dto.AddBankAccountRequest;
+import com.educational.portal.domain.dto.AuthRequest;
+import com.educational.portal.domain.dto.AuthResponse;
+import com.educational.portal.domain.dto.RefreshTokenRequest;
+import com.educational.portal.domain.dto.RegistrationRequest;
+import com.educational.portal.domain.dto.UserDto;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
 import com.educational.portal.exception.IncorrectPasswordException;
+import com.educational.portal.exception.NotAllowedOperationException;
 import com.educational.portal.exception.NotEnoughPermissionException;
 import com.educational.portal.exception.NotFoundException;
 import com.educational.portal.repository.UserRepository;
@@ -15,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,53 +75,39 @@ public class UserService {
 	}
 
 	public List<UserDto> getUnapprovedUsers() {
-		return userRepository.findUsersByIsApproved(false)
+		Role role = roleService.getRoleByName(Constants.USER_ROLE);
+		return userRepository.findUsersByIsApprovedAndRole(false, role)
 							 .stream()
 							 .map(UserDto::convertUserToUserDto)
 							 .toList();
 	}
 
 	public void approveUserById(Long id) {
-		Optional<User> userOptional = userRepository.findById(id);
-		if (userOptional.isPresent()) {
-			var user = userOptional.get();
-			user.setIsApproved(true);
-			userRepository.save(user);
-			LOGGER.info("User with this id " + id + " is approved");
-		} else {
-			throw new NotFoundException("User with this id " + id + " is not found");
-		}
+		User user = findUserById(id);
+		user.setIsApproved(true);
+		userRepository.save(user);
+		LOGGER.info("User with this id " + id + " is approved");
 	}
 
 	public void assignManagerByUserId(Long id) {
-		Optional<User> userOptional = userRepository.findById(id);
-		if (userOptional.isPresent()) {
-			var user = userOptional.get();
-			if (!user.getRole().getName().equals(Constants.ADMIN_ROLE)) {
-				var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
-				user.setRole(role);
-				userRepository.save(user);
-				LOGGER.info("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
-			} else {
-				throw new NotEnoughPermissionException("Current user cannot assign another administrator to the manager role");
-			}
+		User user = findUserById(id);
+		if (!user.getRole().getName().equals(Constants.ADMIN_ROLE)) {
+			var role = roleService.getRoleByName(Constants.MANAGER_ROLE);
+			user.setRole(role);
+			userRepository.save(user);
+			LOGGER.info("User with this id " + id + " been assigned with " + Constants.MANAGER_ROLE + " role");
 		} else {
-			throw new NotFoundException("User with this id " + id + " is not found");
+			throw new NotEnoughPermissionException("Current user cannot assign another administrator to the manager role");
 		}
 	}
 
 	public void assignInstructorByUserId(Long id) {
-		Optional<User> userOptional = userRepository.findById(id);
-		if(userOptional.isPresent()) {
-			var user = userOptional.get();
-			if(user.getRole().getName().equals(Constants.USER_ROLE)) {
-				var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
-				user.setRole(role);
-				userRepository.save(user);
-				LOGGER.info("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
-			}else {
-				throw new NotFoundException("User with this id " + id + " is not found or don't have User role");
-			}
+		User user = findUserById(id);
+		if (user.getRole().getName().equals(Constants.USER_ROLE)) {
+			var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
+			user.setRole(role);
+			userRepository.save(user);
+			LOGGER.info("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
 		}
 	}
 
@@ -130,10 +123,25 @@ public class UserService {
 		throw new IncorrectPasswordException("This token is not valid");
 	}
 
-	public User findByEmail(String email) {
+	public void addUserBankAccount(Principal principal, AddBankAccountRequest addBankAccountRequest) {
+		User user = findByEmail(principal.getName());
+		if(user.isApproved()){
+			user.setIban(addBankAccountRequest.getIban());
+			userRepository.save(user);
+			LOGGER.info("User bank account is added");
+		} else {
+			throw new NotAllowedOperationException("User with this id "+ user.getId() + " is not approved");
+		}
+	}
+	public User findUserById(Long id){
+		return userRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("User with this id " + id + " is not found"));
+	}
+
+	public User findByEmail(String email){
 		return userRepository.findByEmail(email)
-							 .orElseThrow(() -> {
-								 throw new NotFoundException("User with this email " + email + " is not found");
-							 });
+				.orElseThrow(() -> {
+					throw new NotFoundException("User with this email " + email +" is not found");
+				});
 	}
 }
