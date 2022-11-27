@@ -67,6 +67,16 @@ public class ExceptionHandlers {
         );
         return new ResponseEntity<>(incorrectParamExp, badRequest);
     }
+    @ExceptionHandler(NotAllowedOperationException.class)
+    ResponseEntity<Object> handleNotAllowedOperationException(NotAllowedOperationException notAllowedOperationException) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ExceptionValues incorrectParamExp = new ExceptionValues(
+                notAllowedOperationException.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(incorrectParamExp, badRequest);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<ObjectError> objectErrors = methodArgumentNotValidException.getBindingResult().getAllErrors();
