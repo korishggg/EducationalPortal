@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/addBankAccount")
-    public ResponseEntity<?> addUserBankAccount(Principal principal, @RequestBody AddBankAccountRequest addBankAccountRequest){
+    public ResponseEntity<?> addUserBankAccount(Principal principal, @Valid @RequestBody AddBankAccountRequest addBankAccountRequest){
 
         userService.addUserBankAccount(principal, addBankAccountRequest);
 

@@ -1,7 +1,12 @@
 package com.educational.portal.domain.dto;
 
-public class AddBankAccountRequest {
+import com.educational.portal.validation.Iban;
 
+import javax.validation.constraints.NotBlank;
+
+public class AddBankAccountRequest {
+    @Iban
+    @NotBlank(message = "Your bank account cannot be empty")
     private String iban;
 
     public AddBankAccountRequest() {
