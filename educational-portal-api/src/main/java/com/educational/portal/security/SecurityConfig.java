@@ -3,6 +3,7 @@ package com.educational.portal.security;
 import com.educational.portal.util.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/manager/**").hasAnyAuthority(Constants.MANAGER_ROLE)
 				.antMatchers("/admin/**").hasAnyAuthority(Constants.ADMIN_ROLE)
+				.antMatchers(HttpMethod.POST, "/categories").hasAnyAuthority(Constants.ADMIN_ROLE)
 				.antMatchers("/register", "/auth").permitAll()
 				.anyRequest().authenticated()
 				.and()
