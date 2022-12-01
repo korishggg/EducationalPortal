@@ -64,7 +64,7 @@ public class CategoryController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategoryById(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("HTTP Status will be CREATED (CODE 204)\\n\"");
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 	}
 
 }
