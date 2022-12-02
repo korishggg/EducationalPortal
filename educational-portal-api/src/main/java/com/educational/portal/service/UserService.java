@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -138,10 +139,17 @@ public class UserService {
 				.orElseThrow(() -> new NotFoundException("User with this id " + id + " is not found"));
 	}
 
-	public User findByEmail(String email){
-		return userRepository.findByEmail(email)
-				.orElseThrow(() -> {
-					throw new NotFoundException("User with this email " + email +" is not found");
-				});
-	}
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("User with this email " + email + " is not found");
+                });
+    }
+
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserDto::convertUserToUserDto)
+                .collect(Collectors.toList());
+    }
 }
