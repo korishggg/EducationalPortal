@@ -32,9 +32,8 @@ public class CategoryService {
 								 .collect(Collectors.toList());
 	}
 
-	public CategoryDto findById(Long id) {
+	public Category findById(Long id) {
 		return categoryRepository.findById(id)
-								 .map(CategoryDto::convertCategoryToCategoryDto)
 								 .orElseThrow(() -> new NotFoundException("Category with this id = " + id + " is not found"));
 	}
 

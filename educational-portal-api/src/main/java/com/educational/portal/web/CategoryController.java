@@ -2,6 +2,7 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.CategoryDto;
 import com.educational.portal.domain.dto.CreateCategoryRequest;
+import com.educational.portal.domain.entity.Category;
 import com.educational.portal.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,9 @@ public class CategoryController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoryDto> findById(@PathVariable Long id) {
-		CategoryDto category = categoryService.findById(id);
-		return ResponseEntity.ok(category);
+		Category category = categoryService.findById(id);
+		CategoryDto categoryDto = CategoryDto.convertCategoryToCategoryDto(category);
+		return ResponseEntity.ok(categoryDto);
 	}
 
 	@GetMapping

@@ -7,7 +7,6 @@ import com.educational.portal.domain.entity.Group;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
 import com.educational.portal.exception.NotFoundException;
-import com.educational.portal.repository.CategoryRepository;
 import com.educational.portal.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +20,12 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final UserService userService;
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public GroupService(GroupRepository groupRepository, UserService userService, CategoryRepository categoryRepository) {
+    public GroupService(GroupRepository groupRepository, UserService userService, CategoryService categoryService) {
         this.groupRepository = groupRepository;
         this.userService = userService;
-        this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     public GroupDto findById(Long id) {
@@ -47,8 +46,7 @@ public class GroupService {
         createGroupValidation(createGroupRequest.getName());
         User userManager = userService.findByEmail(principal.getName());
         User userInstructor = userService.findUserById(createGroupRequest.getInstructorId());
-        Optional<Category> optionalCategory = categoryRepository.findById(createGroupRequest.getCategoryId());
-        Category category = optionalCategory.get();
+        Category category = categoryService.findById(createGroupRequest.getCategoryId());
         Group group = new Group(createGroupRequest.getName(), userManager, category, userInstructor);
         groupRepository.save(group);
         return GroupDto.convertGroupToGroupDto(group);
@@ -60,7 +58,5 @@ public class GroupService {
         if (optionalGroup.isPresent()) {
             throw new AlreadyExistsException("Category With this name " + groupName + " already exists");
         }
-
     }
-
 }

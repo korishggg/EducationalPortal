@@ -93,11 +93,11 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	}
 
 	private void addGroup() {
-		User user = userRepository.findByEmail("email2@gmail.com").get();
-		User user1 = userRepository.findByEmail("email4@gmail.com").get();
+		User userManager = userRepository.findByEmail("email2@gmail.com").get();
+		User userInstroctor = userRepository.findByEmail("email4@gmail.com").get();
 		Category category = categoryRepository.findCategoryByName("Assembly").get();
 
-		Group group1 = new Group("Hello", user,category,user1);
+		Group group1 = new Group("Hello", userManager, category, userInstroctor);
 
 		groupRepository.save(group1);
 	}
