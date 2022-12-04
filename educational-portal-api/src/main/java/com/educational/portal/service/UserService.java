@@ -138,10 +138,10 @@ public class UserService {
 				.orElseThrow(() -> new NotFoundException("User with this id " + id + " is not found"));
 	}
 
-	public User findByEmail(String email){
-		return userRepository.findByEmail(email)
-				.orElseThrow(() -> {
-					throw new NotFoundException("User with this email " + email +" is not found");
-				});
-	}
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("User with this email " + email + " is not found");
+                });
+    }
 }

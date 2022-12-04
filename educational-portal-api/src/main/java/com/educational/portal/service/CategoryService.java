@@ -63,7 +63,7 @@ public class CategoryService {
 		categoryRepository.save(subCategory);
 	}
 
-	private Category findById(Long id) {
+	public Category findById(Long id) {
 		return categoryRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("Category with this id " + id + " is not found"));
 	}

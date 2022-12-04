@@ -1,9 +1,11 @@
 package com.educational.portal;
 
 import com.educational.portal.domain.entity.Category;
+import com.educational.portal.domain.entity.Group;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.repository.CategoryRepository;
+import com.educational.portal.repository.GroupRepository;
 import com.educational.portal.repository.RoleRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.util.Constants;
@@ -19,15 +21,17 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final CategoryRepository categoryRepository;
+	private final GroupRepository groupRepository;
 
 	public EducationalPortalApplication(UserRepository userRepository,
 										RoleRepository roleRepository,
 										PasswordEncoder passwordEncoder,
-										CategoryRepository categoryRepository) {
+										CategoryRepository categoryRepository, GroupRepository groupRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.categoryRepository = categoryRepository;
+		this.groupRepository = groupRepository;
 	}
 
 	public static void main(String[] args) {
@@ -38,6 +42,7 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		addUsersAndRoles();
 		addCategories();
+		addGroup();
 	}
 
 	private void addUsersAndRoles() {
@@ -85,5 +90,15 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		categoryRepository.save(subCategory4);
 		categoryRepository.save(subCategory5);
 		categoryRepository.save(subCategory6);
+	}
+
+	private void addGroup() {
+		User userManager = userRepository.findByEmail("email2@gmail.com").get();
+		User userInstroctor = userRepository.findByEmail("email4@gmail.com").get();
+		Category category = categoryRepository.findCategoryByName("Assembly").get();
+
+		Group group1 = new Group("Hello", userManager, category, userInstroctor);
+
+		groupRepository.save(group1);
 	}
 }

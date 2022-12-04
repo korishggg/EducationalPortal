@@ -4,11 +4,15 @@ import com.educational.portal.validation.ContactNumberConstraint;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "app_user")
@@ -24,12 +28,23 @@ public class User extends BaseEntity {
 	private String email;
 	@ContactNumberConstraint
 	private String phone;
-	@Column(name ="isApproved")
+	@Column(name = "isApproved")
 	private boolean isApproved;
 
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_educational_group",
+			joinColumns = {
+					@JoinColumn(name = "user_id", referencedColumnName = "id")
+			},
+			inverseJoinColumns = {
+					@JoinColumn(name = "group_id", referencedColumnName = "id")
+			}
+	)
+	List<Group> groups;
 
 	@Column(name = "IBAN")
 	private String iban;
@@ -110,5 +125,13 @@ public class User extends BaseEntity {
 
 	public void setIban(String iban) {
 		this.iban = iban;
+	}
+
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
 	}
 }
