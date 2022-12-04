@@ -18,45 +18,48 @@ import java.util.stream.Collectors;
 @Service
 public class GroupService {
 
-    private final GroupRepository groupRepository;
-    private final UserService userService;
-    private final CategoryService categoryService;
+	private final GroupRepository groupRepository;
+	private final UserService userService;
+	private final CategoryService categoryService;
 
-    public GroupService(GroupRepository groupRepository, UserService userService, CategoryService categoryService) {
-        this.groupRepository = groupRepository;
-        this.userService = userService;
-        this.categoryService = categoryService;
-    }
+	public GroupService(GroupRepository groupRepository, UserService userService, CategoryService categoryService) {
+		this.groupRepository = groupRepository;
+		this.userService = userService;
+		this.categoryService = categoryService;
+	}
 
-    public GroupDto findById(Long id) {
-        return groupRepository.findById(id)
-                .map(GroupDto::convertGroupToGroupDto)
-                .orElseThrow(() -> new NotFoundException("Group with this id = " + id + " is not found"));
+	public Group findById(Long id) {
+		return groupRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Group with this id = " + id + " is not found"));
 
-    }
+	}
 
-    public List<GroupDto> getAllGroups() {
-        return groupRepository.findAll()
-                .stream()
-                .map(GroupDto::convertGroupToGroupDto)
-                .collect(Collectors.toList());
-    }
+	public List<GroupDto> getAllGroups() {
+		return groupRepository.findAll()
+				.stream()
+				.map(GroupDto::convertGroupToGroupDto)
+				.collect(Collectors.toList());
+	}
 
-    public GroupDto createGroup(Principal principal, CreateGroupRequest createGroupRequest) {
-        createGroupValidation(createGroupRequest.getName());
-        User userManager = userService.findByEmail(principal.getName());
-        User userInstructor = userService.findUserById(createGroupRequest.getInstructorId());
-        Category category = categoryService.findById(createGroupRequest.getCategoryId());
-        Group group = new Group(createGroupRequest.getName(), userManager, category, userInstructor);
-        groupRepository.save(group);
-        return GroupDto.convertGroupToGroupDto(group);
+	public GroupDto createGroup(Principal principal, CreateGroupRequest createGroupRequest) {
+		createGroupValidation(createGroupRequest.getName());
+		User userManager = userService.findByEmail(principal.getName());
+		Category category = categoryService.findById(createGroupRequest.getCategoryId());
+		Group group;
+		if (createGroupRequest.getInstructorId() == null) {
+			group = new Group(createGroupRequest.getName(), userManager, category);
+		} else {
+			User userInstructor = userService.findUserById(createGroupRequest.getInstructorId());
+			group = new Group(createGroupRequest.getName(), userManager, category, userInstructor);
+		}
+		groupRepository.save(group);
+		return GroupDto.convertGroupToGroupDto(group);
+	}
 
-    }
-
-    private void createGroupValidation(String groupName) {
-        Optional<Group> optionalGroup = groupRepository.findGroupByName(groupName);
-        if (optionalGroup.isPresent()) {
-            throw new AlreadyExistsException("Category With this name " + groupName + " already exists");
-        }
-    }
+	private void createGroupValidation(String groupName) {
+		Optional<Group> optionalGroup = groupRepository.findGroupByName(groupName);
+		if (optionalGroup.isPresent()) {
+			throw new AlreadyExistsException("Category With this name " + groupName + " already exists");
+		}
+	}
 }

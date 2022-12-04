@@ -41,6 +41,12 @@ public class Group extends BaseEntity {
 	public Group() {
 	}
 
+	public Group(String name, User userManager, Category category) {
+		this.name = name;
+		this.category = category;
+		this.creator = userManager;
+	}
+
 	public String getName() {
 		return name;
 	}

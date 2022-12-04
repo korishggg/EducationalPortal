@@ -2,6 +2,7 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.CreateGroupRequest;
 import com.educational.portal.domain.dto.GroupDto;
+import com.educational.portal.domain.entity.Group;
 import com.educational.portal.service.GroupService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,32 +21,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
-    private final GroupService groupService;
+	private final GroupService groupService;
 
-    public GroupController(GroupService groupService) {
-        this.groupService = groupService;
-    }
+	public GroupController(GroupService groupService) {
+		this.groupService = groupService;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GroupDto> findById(@PathVariable Long id) {
-        GroupDto groupDto = groupService.findById(id);
-        return ResponseEntity.ok(groupDto);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<GroupDto> findById(@PathVariable Long id) {
+		Group groupDto = groupService.findById(id);
+		return ResponseEntity.ok(GroupDto.convertGroupToGroupDto(groupDto));
+	}
 
-    @GetMapping
-    public ResponseEntity<List<GroupDto>> getAllGroups() {
-        List<GroupDto> groupDtos = groupService.getAllGroups();
-        return ResponseEntity.ok(groupDtos);
-    }
+	@GetMapping
+	public ResponseEntity<List<GroupDto>> getAllGroups() {
+		List<GroupDto> groupDtos = groupService.getAllGroups();
+		return ResponseEntity.ok(groupDtos);
+	}
 
-    @PostMapping
-    public ResponseEntity<GroupDto> createGroup(Principal principal,
-                                                @RequestBody @Valid CreateGroupRequest createGroupRequest,
-                                                UriComponentsBuilder uriComponentsBuilder) {
-        GroupDto group = groupService.createGroup(principal, createGroupRequest);
-        UriComponents uriComponents = uriComponentsBuilder.path("/groups/{id}").buildAndExpand(group.getId());
-        var location = uriComponents.toUri();
+	@PostMapping
+	public ResponseEntity<GroupDto> createGroup(Principal principal,
+												@RequestBody @Valid CreateGroupRequest createGroupRequest,
+												UriComponentsBuilder uriComponentsBuilder) {
+		GroupDto group = groupService.createGroup(principal, createGroupRequest);
+		UriComponents uriComponents = uriComponentsBuilder.path("/groups/{id}").buildAndExpand(group.getId());
+		var location = uriComponents.toUri();
 
-        return ResponseEntity.created(location).build();
-    }
+		return ResponseEntity.created(location).build();
+	}
 }
