@@ -10,6 +10,7 @@ import com.educational.portal.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,9 +33,12 @@ public class CategoryService {
 								 .collect(Collectors.toList());
 	}
 
-	public Category findById(Long id) {
-		return categoryRepository.findById(id)
-								 .orElseThrow(() -> new NotFoundException("Category with this id = " + id + " is not found"));
+	public CategoryDto findByIdAndConvertToDto(Long id, boolean isHideSubCategories) {
+		Category category = findById(id);
+		if(isHideSubCategories){
+			category.setSubCategories(new ArrayList<>());
+		}
+		return CategoryDto.convertCategoryToCategoryDto(category);
 	}
 
 	public CategoryDto createCategory(Principal principal, CreateCategoryRequest createCategoryRequest) {
@@ -51,4 +55,22 @@ public class CategoryService {
 			throw new AlreadyExistsException("Category With this name " + categoryName +" already exists");
 		}
 	}
+
+	public void assignSubcategoryToCategory(Long categoryId, Long subCategoryId) {
+		Category category = findById(categoryId);
+		Category subCategory = findById(subCategoryId);
+		subCategory.setParent(category);
+		categoryRepository.save(subCategory);
+	}
+
+	private Category findById(Long id) {
+		return categoryRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Category with this id " + id + " is not found"));
+	}
+
+	public void deleteCategoryById(Long id) {
+		Category category = findById(id);
+		categoryRepository.delete(category);
+	}
+
 }
