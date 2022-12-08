@@ -97,8 +97,8 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		User userInstroctor = userRepository.findByEmail("email4@gmail.com").get();
 		Category category = categoryRepository.findCategoryByName("Assembly").get();
 
-		Group group1 = new Group("Hello", userManager, category, userInstroctor);
-
-		groupRepository.save(group1);
+		Group group = new Group("Hello", userManager, category, userInstroctor);
+		group.addUser(userManager);
+		groupRepository.save(group);
 	}
 }

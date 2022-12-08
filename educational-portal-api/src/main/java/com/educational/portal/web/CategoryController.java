@@ -2,9 +2,7 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.CategoryDto;
 import com.educational.portal.domain.dto.CreateCategoryRequest;
-import com.educational.portal.domain.entity.Category;
 import com.educational.portal.service.CategoryService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +63,7 @@ public class CategoryController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategoryById(id);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("category with this id "+ id + " and their subcategories is deleted");
+		return ResponseEntity.noContent().build();
 	}
 
 }

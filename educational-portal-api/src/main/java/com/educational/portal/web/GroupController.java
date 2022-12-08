@@ -5,6 +5,7 @@ import com.educational.portal.domain.dto.GroupDto;
 import com.educational.portal.domain.entity.Group;
 import com.educational.portal.service.GroupService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,5 +49,38 @@ public class GroupController {
 		var location = uriComponents.toUri();
 
 		return ResponseEntity.created(location).build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteGroup(@PathVariable Long id) {
+		groupService.deleteGroupById(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("{groupId}/assignInstructor/{instructorId}")
+	public ResponseEntity<?> assignInstructorToGroup(@PathVariable(name = "groupId") Long groupId,
+													 @PathVariable(name = "instructorId") Long instructorId) {
+		groupService.assignInstructorToGroup(groupId, instructorId);
+		return ResponseEntity.ok("");
+	}
+
+	@PostMapping("{groupId}/unAssignInstructor")
+	public ResponseEntity<?> unAssignInstructor(@PathVariable(name = "groupId") Long groupId) {
+		groupService.unAssignInstructorFromGroup(groupId);
+		return ResponseEntity.ok("");
+	}
+
+	@PostMapping("{groupId}/assignUser/{userId}")
+	public ResponseEntity<?> assignUsersToGroup(@PathVariable(name = "groupId") Long groupId,
+												@PathVariable(name = "userId") Long userId) {
+		groupService.assignUserToGroup(groupId, userId);
+		return ResponseEntity.ok("");
+	}
+
+	@PostMapping("{groupId}/unAssignUser/{userId}")
+	public ResponseEntity<?> unAssignUsersToGroup(@PathVariable(name = "groupId") Long groupId,
+												@PathVariable(name = "userId") Long userId) {
+		groupService.unAssignUserFromGroup(groupId, userId);
+		return ResponseEntity.ok("");
 	}
 }
