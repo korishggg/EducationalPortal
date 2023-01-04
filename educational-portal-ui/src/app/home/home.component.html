@@ -1,0 +1,10 @@
+<div class="container">
+  <header class="jumbotron">
+    <div *ngIf="!isLoggedIn">
+      <h1>INFO FOR UNAUTHORIZED USER</h1>
+    </div>
+    <div *ngIf="isLoggedIn">
+      <h1>INFO FOR AUTHORIZED USER</h1>
+    </div>
+  </header>
+</div>

@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasAnyAuthority(Constants.ADMIN_ROLE)
 				.antMatchers(HttpMethod.POST, "/categories").hasAnyAuthority(Constants.ADMIN_ROLE)
 				.antMatchers(HttpMethod.POST, "/groups").hasAnyAuthority(Constants.MANAGER_ROLE)
-				.antMatchers("/register", "/auth").permitAll()
+				.antMatchers("/auth/signUp", "/auth/signIn").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
+		config.addAllowedOriginPattern("*");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);

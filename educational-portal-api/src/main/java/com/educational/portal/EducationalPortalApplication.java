@@ -57,10 +57,10 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		instructorRole = roleRepository.save(instructorRole);
 		userRole = roleRepository.save(userRole);
 
-		var user1 = new User("firstName1", "lastName1", passwordEncoder.encode("password1"), "email1@gmail.com", "+380686930810", adminRole);
-		var user2 = new User("firstName2", "lastName2", passwordEncoder.encode("password2"), "email2@gmail.com", "+380686930820", managerRole);
-		var user3 = new User("firstName3", "lastName3", passwordEncoder.encode("password3"), "email3@gmail.com", "+380686930830", instructorRole);
-		var user4 = new User("firstName4", "lastName4", passwordEncoder.encode("password4"), "email4@gmail.com", "+380686930840", userRole);
+		var user1 = new User("firstName1", "lastName1", passwordEncoder.encode("admin"), "admin@gmail.com", "+380686930810", adminRole, true);
+		var user2 = new User("firstName2", "lastName2", passwordEncoder.encode("manager"), "manager@gmail.com", "+380686930820", managerRole, true);
+		var user3 = new User("firstName3", "lastName3", passwordEncoder.encode("instructor"), "instructor@gmail.com", "+380686930830", instructorRole, true);
+		var user4 = new User("firstName4", "lastName4", passwordEncoder.encode("user"), "user@gmail.com", "+380686930840", userRole);
 
 		userRepository.save(user1);
 		userRepository.save(user2);
@@ -69,7 +69,7 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	}
 
 	private void addCategories() {
-		User user = userRepository.findByEmail("email1@gmail.com").get();
+		User user = userRepository.findByEmail("admin@gmail.com").get();
 		// for testing we create categories and sub categories
 		Category category1 = new Category("Software", user);
 		Category subCategory1 = new Category("Development", category1, user);
@@ -93,8 +93,8 @@ public class EducationalPortalApplication implements CommandLineRunner {
 	}
 
 	private void addGroup() {
-		User userManager = userRepository.findByEmail("email2@gmail.com").get();
-		User userInstroctor = userRepository.findByEmail("email4@gmail.com").get();
+		User userManager = userRepository.findByEmail("manager@gmail.com").get();
+		User userInstroctor = userRepository.findByEmail("instructor@gmail.com").get();
 		Category category = categoryRepository.findCategoryByName("Assembly").get();
 
 		Group group1 = new Group("Hello", userManager, category, userInstroctor);
