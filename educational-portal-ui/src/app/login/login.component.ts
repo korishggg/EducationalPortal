@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
           this.tokenStorage.saveToken(authResponse.token);
           this.userService.getUserInfo()
             .subscribe(userInfo => {
-              console.log(userInfo);
               // TODO IMPLEMENT LATER REFRESH TOKEN LOGIC
                 this.tokenStorage.saveUser(userInfo);
 

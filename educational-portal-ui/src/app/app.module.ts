@@ -15,7 +15,6 @@ import { ProfileComponent } from './profile/profile.component';
 import {HttpClientModule} from "@angular/common/http";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
 
-
 @NgModule({
   declarations: [
     AppComponent,
