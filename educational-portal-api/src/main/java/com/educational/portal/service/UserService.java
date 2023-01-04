@@ -1,11 +1,6 @@
 package com.educational.portal.service;
 
-import com.educational.portal.domain.dto.AddBankAccountRequest;
-import com.educational.portal.domain.dto.AuthRequest;
-import com.educational.portal.domain.dto.AuthResponse;
-import com.educational.portal.domain.dto.RefreshTokenRequest;
-import com.educational.portal.domain.dto.RegistrationRequest;
-import com.educational.portal.domain.dto.UserDto;
+import com.educational.portal.domain.dto.*;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
@@ -144,4 +139,9 @@ public class UserService {
                     throw new NotFoundException("User with this email " + email + " is not found");
                 });
     }
+
+	public UserInfoDto getUserInfoForAuthorizedUser(Principal principal) {
+		User user = findByEmail(principal.getName());
+		return UserInfoDto.convertUserToUserDto(user);
+	}
 }

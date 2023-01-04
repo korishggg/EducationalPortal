@@ -63,6 +63,12 @@ public class User extends BaseEntity {
 		this.role = role;
 	}
 
+
+	public User(String firstName, String lastName, String password, String email, String phone, Role role, boolean isApproved) {
+		this(firstName, lastName, password, email, phone, role);
+		this.isApproved = isApproved;
+	}
+
 	public Role getRole() {
 		return role;
 	}

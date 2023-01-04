@@ -1,12 +1,10 @@
 package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.AddBankAccountRequest;
+import com.educational.portal.domain.dto.UserInfoDto;
 import com.educational.portal.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -28,5 +26,12 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity<UserInfoDto> userInfo(Principal principal) {
+        var userInfo = userService.getUserInfoForAuthorizedUser(principal);
+        return ResponseEntity.ok()
+                             .body(userInfo);
     }
 }
