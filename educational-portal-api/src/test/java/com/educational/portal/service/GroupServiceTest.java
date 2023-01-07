@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.security.Principal;
 import java.util.Optional;
 
+import static com.educational.portal.TestConstants.USER_WITH_MANAGER_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,16 +40,15 @@ class GroupServiceTest {
 	@BeforeEach
 	void setUp() {
 		groupService = new GroupService(groupRepository, userService, categoryService);
-
 	}
 
-	public void MockGroupFindById() {
+	public void mockGroupFindById() {
 		when(groupRepository.findById(groupId)).thenReturn(Optional.of(TestConstants.GROUP_WITH_INSTRUCTOR));
 	}
 
 	@Test
 	void findById() {
-		MockGroupFindById();
+		mockGroupFindById();
 
 		Group returnedGroup = groupService.findById(groupId);
 
@@ -77,7 +77,7 @@ class GroupServiceTest {
 
 		var groupName = "name";
 
-		Group group = new Group(groupName, TestConstants.USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY);
+		Group group = new Group(groupName, USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY);
 
 		CreateGroupRequest createGroupRequest = new CreateGroupRequest("name", TestConstants.CATEGORY.getId(), TestConstants.USER_WITH_INSTRUCTOR_ROLE.getId());
 
@@ -92,15 +92,19 @@ class GroupServiceTest {
 		Principal principal = mock(Principal.class);
 
 		var groupName = TestConstants.GROUP_WITHOUT_INSTRUCTOR.getName();
+		var categoryId = 2L;
+		var instructorId = 3L;
 
-		CreateGroupRequest createGroupRequest = new CreateGroupRequest(groupName, groupId, groupId);
+		CreateGroupRequest createGroupRequest = new CreateGroupRequest(groupName, categoryId, instructorId);
 
-		when(principal.getName()).thenReturn(TestConstants.USER_WITH_MANAGER_ROLE.getEmail());
+		when(principal.getName()).thenReturn(USER_WITH_MANAGER_ROLE.getEmail());
 		when(groupRepository.findGroupByName(groupName)).thenReturn(Optional.empty());
-		when(categoryService.findById(groupId)).thenReturn(TestConstants.CATEGORY);
+		when(categoryService.findById(categoryId)).thenReturn(TestConstants.CATEGORY);
 
 		groupService.createGroup(principal, createGroupRequest);
 
+		verify(userService).findByEmail(USER_WITH_MANAGER_ROLE.getEmail());
+		verify(categoryService).findById(categoryId);
 		verify(groupRepository).save(any(Group.class));
 	}
 
@@ -109,22 +113,27 @@ class GroupServiceTest {
 		Principal principal = mock(Principal.class);
 
 		var groupName = TestConstants.GROUP_WITH_INSTRUCTOR.getName();
+		var categoryId = 2L;
+		var instructorId = 3L;
 
-		CreateGroupRequest createGroupRequest = new CreateGroupRequest(groupName, groupId, groupId);
+		CreateGroupRequest createGroupRequest = new CreateGroupRequest(groupName, categoryId, instructorId);
 
-		when(principal.getName()).thenReturn(TestConstants.USER_WITH_MANAGER_ROLE.getEmail());
+		when(principal.getName()).thenReturn(USER_WITH_MANAGER_ROLE.getEmail());
 		when(groupRepository.findGroupByName(groupName)).thenReturn(Optional.empty());
-		when(categoryService.findById(groupId)).thenReturn(TestConstants.CATEGORY);
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
+		when(categoryService.findById(categoryId)).thenReturn(TestConstants.CATEGORY);
+		when(userService.findUserById(instructorId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
 
 		groupService.createGroup(principal, createGroupRequest);
 
+		verify(userService).findByEmail(USER_WITH_MANAGER_ROLE.getEmail());
+		verify(categoryService).findById(categoryId);
+		verify(userService).findUserById(instructorId);
 		verify(groupRepository).save(any(Group.class));
 	}
 
 	@Test
 	void deleteGroupById() {
-		MockGroupFindById();
+		mockGroupFindById();
 
 		groupService.deleteGroupById(groupId);
 
@@ -133,41 +142,52 @@ class GroupServiceTest {
 
 	@Test
 	void assignInstructorToGroup() {
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
-		when(groupRepository.findById(groupId)).thenReturn(Optional.of(TestConstants.GROUP_WITHOUT_INSTRUCTOR));
+		var instructorId = 3L;
 
-		groupService.assignInstructorToGroup(groupId, groupId);
+		Group group = new Group("name", USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY);
 
+		when(userService.findUserById(instructorId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
+		when(groupRepository.findById(groupId)).thenReturn(Optional.of(group));
+
+		groupService.assignInstructorToGroup(groupId, instructorId);
+
+		verify(userService).findUserById(instructorId);
 		verify(groupRepository).save(any(Group.class));
-
 	}
 
 	@Test
-	void assignInstructorToGroupWhenInstructorIsNotNull() {
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
+	void assignInstructorToGroupWhenGroupHasInstructor() {
+		var instructorId = 3L;
+
+		when(userService.findUserById(instructorId)).thenReturn(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
 		when(groupRepository.findById(groupId)).thenReturn(Optional.of(TestConstants.GROUP_WITH_INSTRUCTOR));
 
-		TestConstants.GROUP_WITH_INSTRUCTOR.setInstructor(TestConstants.USER_WITH_INSTRUCTOR_ROLE);
-
-		Throwable alreadyExistsException = assertThrows(AlreadyExistsException.class, () -> groupService.assignInstructorToGroup(groupId, groupId));
-		assertEquals("User with id " + groupId + " have no instructor role or " +
-				"in this group instructor already assigned", alreadyExistsException.getMessage());
+		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class,
+				() -> groupService.assignInstructorToGroup(groupId, instructorId));
+		assertEquals("User with id " + instructorId + " have no instructor role or " +
+				"in this group instructor already assigned", notAllowedOperationException.getMessage());
+		verify(userService).findUserById(instructorId);
 	}
 
 	@Test
 	void assignInstructorToGroupWhenUserHaveNoInstructorRole() {
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_USER_ROLE);
+		var userId = 3L;
+
+		when(userService.findUserById(userId)).thenReturn(TestConstants.USER_WITH_USER_ROLE);
 		when(groupRepository.findById(groupId)).thenReturn(Optional.of(TestConstants.GROUP_WITHOUT_INSTRUCTOR));
 
-		Throwable alreadyExistsException = assertThrows(AlreadyExistsException.class, () -> groupService.assignInstructorToGroup(groupId, groupId));
-		assertEquals("User with id " + groupId + " have no instructor role or " +
-				"in this group instructor already assigned", alreadyExistsException.getMessage());
+		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class,
+				() -> groupService.assignInstructorToGroup(groupId, userId));
+		assertEquals("User with id " + userId + " have no instructor role or " +
+				"in this group instructor already assigned", notAllowedOperationException.getMessage());
+		verify(userService).findUserById(userId);
 	}
 
 	@Test
 	void unAssignInstructorFromGroup() {
-		MockGroupFindById();
+		var group = new Group("test1", TestConstants.USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY, TestConstants.USER_WITH_INSTRUCTOR_ROLE);
 
+		when(groupRepository.findById(groupId)).thenReturn(Optional.of(group));
 		groupService.unAssignInstructorFromGroup(groupId);
 
 		verify(groupRepository).save(any(Group.class));
@@ -177,47 +197,53 @@ class GroupServiceTest {
 	void unAssignInstructorFromGroupWhenInstructorIsNull() {
 		when(groupRepository.findById(groupId)).thenReturn(Optional.of(TestConstants.GROUP_WITHOUT_INSTRUCTOR));
 
-		TestConstants.GROUP_WITHOUT_INSTRUCTOR.setInstructor(null);
-
 		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class, () -> groupService.unAssignInstructorFromGroup(groupId));
 
-		assertEquals("Group with id " + groupId + " is already have not instructor", notAllowedOperationException.getMessage());
+		assertEquals("Group with id " + groupId + " is already haven\n't instructor", notAllowedOperationException.getMessage());
 	}
 
 	@Test
 	void assignUserToGroup() {
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_USER_ROLE);
-		MockGroupFindById();
+		var userId = 4L;
 
-		groupService.assignUserToGroup(groupId, groupId);
+		mockGroupFindById();
+		when(userService.findUserById(userId)).thenReturn(TestConstants.USER_WITH_USER_ROLE);
 
+		groupService.assignUserToGroup(groupId, userId);
+
+		verify(groupRepository).findById(groupId);
+		verify(userService).findUserById(userId);
 		verify(groupRepository).save(any(Group.class));
 	}
 
 	@Test
 	void assignUserToGroupWhenUserHaveNoUserRole() {
-		when(userService.findUserById(groupId)).thenReturn(TestConstants.USER_WITH_MANAGER_ROLE);
-		MockGroupFindById();
+		var userId = 4L;
 
-		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class, () -> groupService.assignUserToGroup(groupId, groupId));
+		mockGroupFindById();
+		when(userService.findUserById(userId)).thenReturn(USER_WITH_MANAGER_ROLE);
+		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class, () -> groupService.assignUserToGroup(groupId, userId));
 
-		assertEquals("User with id " + groupId + " have no user role", notAllowedOperationException.getMessage());
+		assertEquals("User with id " + userId + " have no user role", notAllowedOperationException.getMessage());
 
+		verify(groupRepository).findById(groupId);
+		verify(userService).findUserById(userId);
 	}
 
 	@Test
 	void unAssignUserFromGroup() {
-		Group group = new Group("name", TestConstants.USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY);
+		var userId = 4L;
+		Group group = new Group("name", USER_WITH_MANAGER_ROLE, TestConstants.CATEGORY);
 		User user = new User("firstName", "lastName", "password", "email", "phone", TestConstants.USER_ROLE);
-
-		user.setId(groupId);
+		user.setId(userId);
 		group.addUser(user);
 
 		when(groupRepository.findById(groupId)).thenReturn(Optional.of(group));
 
-		groupService.unAssignUserFromGroup(groupId, groupId);
+		groupService.unAssignUserFromGroup(groupId, userId);
 
 		verify(groupRepository).save(group);
+		verify(groupRepository).findById(groupId);
 		assertEquals(0, group.getUsers().size());
 	}
 }

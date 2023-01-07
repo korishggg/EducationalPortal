@@ -20,5 +20,5 @@ public class TestConstants {
 	public static final Category CATEGORY = new Category("name");
 
 	public static final Group GROUP_WITH_INSTRUCTOR = new Group("name", USER_WITH_MANAGER_ROLE, CATEGORY, USER_WITH_INSTRUCTOR_ROLE);
-	public static final Group GROUP_WITHOUT_INSTRUCTOR = new Group("name", USER_WITH_MANAGER_ROLE, CATEGORY);
+	public static final Group GROUP_WITHOUT_INSTRUCTOR = new Group("name1", USER_WITH_MANAGER_ROLE, CATEGORY);
 }

@@ -1,6 +1,7 @@
 package com.educational.portal.service;
 
 import com.educational.portal.TestConstants;
+import com.educational.portal.domain.dto.CategoryDto;
 import com.educational.portal.domain.dto.CreateCategoryRequest;
 import com.educational.portal.domain.entity.Category;
 import com.educational.portal.exception.AlreadyExistsException;
@@ -40,19 +41,38 @@ class CategoryServiceTest {
 	@Test
 	void getAllCategories() {
 		categoryService.getAllCategories();
+		verify(categoryRepository).findAll();
+	}
 
-		verify(categoryRepository).findCategoriesByParent(null);
+	@Test
+	void findByIdAndConvertToDtoWhenHideSubCategories() {
+		Category category = new Category("test");
+		Category subCategory = new Category("test1");
+		category.addSubCategory(subCategory);
+		boolean isHideSubCategories = true;
+
+		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+		CategoryDto result = categoryService.findByIdAndConvertToDto(categoryId, isHideSubCategories);
+
+		verify(categoryRepository).findById(categoryId);
+		assertEquals(result.getSubcategories().size(), 0);
 	}
 
 	@Test
 	void findByIdAndConvertToDto() {
-		boolean isHideSubCategories = true;
+		Category category = new Category("test");
+		Category subCategory = new Category("test1");
+		category.addSubCategory(subCategory);
 
-		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(TestConstants.CATEGORY));
+		boolean isHideSubCategories = false;
 
-		categoryService.findByIdAndConvertToDto(categoryId, isHideSubCategories);
+		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+		CategoryDto result = categoryService.findByIdAndConvertToDto(categoryId, isHideSubCategories);
 
 		verify(categoryRepository).findById(categoryId);
+		assertEquals(result.getSubcategories().size(), 1);
 	}
 
 	@Test
@@ -68,7 +88,6 @@ class CategoryServiceTest {
 		Throwable alreadyExistsException = assertThrows(AlreadyExistsException.class, () -> categoryService.createCategory(principal, createCategoryRequest));
 
 		assertEquals("Category With this name " + name + " already exists", alreadyExistsException.getMessage());
-
 	}
 
 	@Test
@@ -78,9 +97,11 @@ class CategoryServiceTest {
 		CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest("name");
 
 		when(principal.getName()).thenReturn(TestConstants.USER_WITH_USER_ROLE.getEmail());
+		when(userService.findByEmail(TestConstants.USER_WITH_USER_ROLE.getEmail())).thenReturn(TestConstants.USER_WITH_USER_ROLE);
 
 		categoryService.createCategory(principal, createCategoryRequest);
 
+		verify(userService).findByEmail(TestConstants.USER_WITH_USER_ROLE.getEmail());
 		verify(categoryRepository).save(any(Category.class));
 	}
 

@@ -203,14 +203,16 @@ class UserServiceTest {
 
 	@Test
 	void assignManagerByUserId() {
-		when(userRepository.findById(userId)).thenReturn(Optional.of(TestConstants.USER_WITH_USER_ROLE));
+		var user = new User("firstName", "lastName", "password", "email", "phone", TestConstants.USER_ROLE);
+
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 		when(roleService.getRoleByName(Constants.MANAGER_ROLE)).thenReturn(TestConstants.MANAGER_ROLE);
 
 		userService.assignManagerByUserId(userId);
 
 		verify(userRepository).save(any(User.class));
 
-		assertEquals(TestConstants.USER_WITH_USER_ROLE.getRole(), TestConstants.MANAGER_ROLE);
+		assertEquals(user.getRole(), TestConstants.MANAGER_ROLE);
 	}
 
 	@Test
@@ -219,6 +221,8 @@ class UserServiceTest {
 
 		Throwable notEnoughPermissionException = assertThrows(NotEnoughPermissionException.class, () -> userService.assignManagerByUserId(userId));
 		assertEquals("Current user cannot assign another administrator to the manager role", notEnoughPermissionException.getMessage());
+
+		verify(userRepository).findById(userId);
 	}
 
 	@Test
@@ -226,9 +230,9 @@ class UserServiceTest {
 		Principal principal = mock(Principal.class);
 
 		User user = new User("firstName", "lastName", "password", "email", "phone", new Role(Constants.ADMIN_ROLE));
-		AddBankAccountRequest addBankAccountRequest = new AddBankAccountRequest("bank");
-
 		user.setIsApproved(true);
+
+		AddBankAccountRequest addBankAccountRequest = new AddBankAccountRequest("bank");
 
 		when(principal.getName()).thenReturn(user.getEmail());
 		when(userRepository.findByEmail(principal.getName())).thenReturn(Optional.of(user));
@@ -243,14 +247,12 @@ class UserServiceTest {
 		Principal principal = mock(Principal.class);
 
 		User user = new User("firstName", "lastName", "password", "email", "phone", new Role(Constants.ADMIN_ROLE));
-
 		user.setId(userId);
+		user.setIsApproved(false);
 
 		AddBankAccountRequest addBankAccountRequest = new AddBankAccountRequest("bank");
 
 		when(userRepository.findByEmail(principal.getName())).thenReturn(Optional.of(user));
-
-		user.setIsApproved(false);
 
 		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class, () -> userService.addUserBankAccount(principal, addBankAccountRequest));
 

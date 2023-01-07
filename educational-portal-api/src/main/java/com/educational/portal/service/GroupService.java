@@ -79,8 +79,8 @@ public class GroupService {
 			group.setInstructor(userInstructor);
 			groupRepository.save(group);
 			LOGGER.info("User with id " + instructorId + " is assigned to group with id " + groupId + " as Instructor");
-		} else throw new AlreadyExistsException("User with id " + instructorId + " have no instructor role or " +
-				"in this group instructor already assigned");
+		} else throw new NotAllowedOperationException("User with id " + instructorId + " " +
+				"have no instructor role or " + "in this group instructor already assigned");
 	}
 
 	public void unAssignInstructorFromGroup(Long groupId) {
@@ -89,7 +89,7 @@ public class GroupService {
 			group.setInstructor(null);
 			groupRepository.save(group);
 			LOGGER.info("Instructor has been unassigned from group with id " + groupId);
-		} else throw new NotAllowedOperationException("Group with id " + groupId + " is already have not instructor");
+		} else throw new NotAllowedOperationException("Group with id " + groupId + " is already haven\n't instructor");
 	}
 
 	public void assignUserToGroup(Long groupId, Long userId) {
