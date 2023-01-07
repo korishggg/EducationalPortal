@@ -2,7 +2,8 @@ package com.educational.portal.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,13 +22,22 @@ public class Group extends BaseEntity {
 	@ManyToOne
 	private User creator;
 
-	@ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
+	@ManyToMany
+	@JoinTable(name = "user_educational_group",
+			joinColumns = {
+					@JoinColumn(name = "user_id", referencedColumnName = "id")
+			},
+			inverseJoinColumns = {
+					@JoinColumn(name = "group_id", referencedColumnName = "id")
+			}
+	)
 	private List<User> users = new ArrayList<>();
 
 	@ManyToOne
 	private User instructor;
 
-	public Group(List<User> users) {
+	public Group(String name, List<User> users) {
+		this.name = name;
 		this.users = users;
 	}
 
@@ -90,5 +100,7 @@ public class Group extends BaseEntity {
 	public void addUser(User user) {
 		this.users.add(user);
 	}
-
+	public void removeUser(User user) {
+		this.users.remove(user);
+	}
 }

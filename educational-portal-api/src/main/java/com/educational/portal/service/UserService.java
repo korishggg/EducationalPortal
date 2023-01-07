@@ -102,7 +102,7 @@ public class UserService {
 			var role = roleService.getRoleByName(Constants.INSTRUCTOR_ROLE);
 			user.setRole(role);
 			userRepository.save(user);
-			LOGGER.info("User with this id " + id + "has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
+			LOGGER.info("User with this id " + id + " has been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
 		}
 	}
 

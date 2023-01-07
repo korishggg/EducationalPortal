@@ -4,14 +4,13 @@ import com.educational.portal.validation.ContactNumberConstraint;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,16 +34,8 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_educational_group",
-			joinColumns = {
-					@JoinColumn(name = "user_id", referencedColumnName = "id")
-			},
-			inverseJoinColumns = {
-					@JoinColumn(name = "group_id", referencedColumnName = "id")
-			}
-	)
-	List<Group> groups;
+	@ManyToMany(mappedBy = "users")
+	List<Group> groups = new ArrayList<>();
 
 	@Column(name = "IBAN")
 	private String iban;
