@@ -1,1 +1,19 @@
-<p>board-manager works!</p>
+<div class="container">
+
+  <div class="manager-board">
+    <div class="row">
+      <div class="col-2">
+        <ul class="nav flex-column nav-pills">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="./users" routerLinkActive="active" >Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="./groups" routerLinkActive="active">Groups</a>
+          </li>
+        </ul>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+

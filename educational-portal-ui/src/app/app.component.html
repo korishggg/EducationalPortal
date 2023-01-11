@@ -3,19 +3,19 @@
     <a href="#" class="navbar-brand">Educational Portal</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
       <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Home </a>
+        <a href="/home" *ngIf="!isLoggedIn" class="nav-link" routerLink="home">Home </a>
       </li>
-      <li class="nav-item" *ngIf="showAdminBoard">
+      <li class="nav-item" *ngIf="isUserHasRole('ADMIN_ROLE')">
         <a href="/admin" class="nav-link" routerLink="admin">Admin Board</a>
       </li>
-      <li class="nav-item" *ngIf="showManagerBoard">
+      <li class="nav-item" *ngIf="isUserHasRole('MANAGER_ROLE')">
         <a href="/manager" class="nav-link" routerLink="manager">Manager Board</a>
       </li>
-      <li class="nav-item" *ngIf="showInstructorBoard">
+      <li class="nav-item" *ngIf="isUserHasRole('INSTRUCTOR_ROLE')">
         <a href="/instructor" class="nav-link" routerLink="instructor">Instructor Board</a>
       </li>
       <li class="nav-item">
-        <a href="/user" class="nav-link" *ngIf="isLoggedIn && showUserBoard" routerLink="user">User</a>
+        <a href="/user" class="nav-link" *ngIf="isUserHasRole('USER_ROLE')" routerLink="user">User Board</a>
       </li>
     </ul>
 
@@ -38,7 +38,7 @@
     </ul>
   </nav>
 
-  <div class="container">
+  <div>
     <router-outlet></router-outlet>
   </div>
 </div>

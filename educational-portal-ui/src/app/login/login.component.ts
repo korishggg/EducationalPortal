@@ -3,6 +3,7 @@ import {AuthService} from "../service/api/auth.service";
 import {TokenStorageService} from "../service/token-storage.service";
 import {AuthRequest} from "../modules/AuthRequest";
 import {UserService} from "../service/api/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   role?: string = '';
 
-  constructor(private authService: AuthService,
+  constructor(private router: Router,
+              private authService: AuthService,
               private userService: UserService,
               private tokenStorage: TokenStorageService) {
   }
@@ -38,13 +40,14 @@ export class LoginComponent implements OnInit {
           this.tokenStorage.saveToken(authResponse.token);
           this.userService.getUserInfo()
             .subscribe(userInfo => {
-              // TODO IMPLEMENT LATER REFRESH TOKEN LOGIC
+                // TODO IMPLEMENT LATER REFRESH TOKEN LOGIC
                 this.tokenStorage.saveUser(userInfo);
 
                 this.isLoginFailed = false;
                 this.isLoggedIn = true;
-                this.role = this.tokenStorage.getUser()?.role
-                this.reloadPage();
+                this.role = this.tokenStorage.getUser()?.role;
+
+                this.routeToRoleBasedHomeController();
               }
             )
         },
@@ -57,5 +60,23 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  // TODO TEMPORARY SOLUTION LATER SHOULD BE IMPROVED WITH AUTO ROLE BASED ROUTING !
+  private routeToRoleBasedHomeController() {
+    let url;
+    if (this.role === 'ADMIN_ROLE') {
+      url = '/admin';
+    } else if (this.role === 'MANAGER_ROLE') {
+      url = '/manager';
+    } else if (this.role === 'INSTRUCTOR_ROLE') {
+      url = '/instructor';
+    } else {
+      url = '/user';
+    }
+    this.router.navigate([url])
+      .then(() => {
+        window.location.reload();
+      })
   }
 }
