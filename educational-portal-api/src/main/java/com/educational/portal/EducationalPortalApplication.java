@@ -61,11 +61,19 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		var user2 = new User("firstName2", "lastName2", passwordEncoder.encode("manager"), "manager@gmail.com", "+380686930820", managerRole, true);
 		var user3 = new User("firstName3", "lastName3", passwordEncoder.encode("instructor"), "instructor@gmail.com", "+380686930830", instructorRole, true);
 		var user4 = new User("firstName4", "lastName4", passwordEncoder.encode("user"), "user@gmail.com", "+380686930840", userRole);
+		var user5 = new User("firstName5", "lastName5", passwordEncoder.encode("user5"), "user5@gmail.com", "+380686930841", userRole);
+		var user6 = new User("firstName6", "lastName6", passwordEncoder.encode("user6"), "user6@gmail.com", "+380686930842", userRole);
+		var user7 = new User("firstName7", "lastName7", passwordEncoder.encode("user7"), "user7@gmail.com", "+380686930843", userRole);
+		var user8 = new User("firstName8", "lastName8", passwordEncoder.encode("user8"), "user8@gmail.com", "+380686930844", userRole);
 
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
 		userRepository.save(user4);
+		userRepository.save(user5);
+		userRepository.save(user6);
+		userRepository.save(user7);
+		userRepository.save(user8);
 	}
 
 	private void addCategories() {
