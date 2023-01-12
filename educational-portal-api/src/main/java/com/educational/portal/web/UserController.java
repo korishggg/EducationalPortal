@@ -34,4 +34,11 @@ public class UserController {
         return ResponseEntity.ok()
                              .body(userInfo);
     }
+
+    @GetMapping("/isApproved")
+    public ResponseEntity<Boolean> isCurrentUserApproved(Principal principal) {
+        var isApproved = userService.isCurrentUserApproved(principal);
+        return ResponseEntity.ok()
+                .body(isApproved);
+    }
 }

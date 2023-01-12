@@ -1,1 +1,26 @@
-<p>board-user works!</p>
+<div class="container">
+  <div class="user-board">
+
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+
+    <div *ngIf="!isCurrentUserApproved">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>TBD!</strong> Logic With Documents uploading is not implemented yet!
+      </div>
+      <div class="alert alert-primary" role="alert">
+        <h4 class="alert-heading">Current User Is Not Approved Yet</h4>
+        <p>Please Wait till manager review Your Documents</p>
+      </div>
+    </div>
+
+    <div *ngIf="isCurrentUserApproved">
+      <p class="text-uppercase">User Board</p>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>TBD!</strong> Any Other User Related Logic is Not Implemented Yet!
+      </div>
+    </div>
+  </div>
+</div>

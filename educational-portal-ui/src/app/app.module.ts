@@ -14,12 +14,16 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import {HttpClientModule} from "@angular/common/http";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
+import {UsersControlComponent} from "./board-manager/users/users-control.component";
+import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardAdminComponent,
     BoardManagerComponent,
+    UsersControlComponent,
+    GroupsControlComponent,
     BoardInstructorComponent,
     BoardUserComponent,
     LoginComponent,

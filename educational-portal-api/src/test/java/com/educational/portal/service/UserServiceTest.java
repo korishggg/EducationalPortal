@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -257,6 +258,20 @@ class UserServiceTest {
 		Throwable notAllowedOperationException = assertThrows(NotAllowedOperationException.class, () -> userService.addUserBankAccount(principal, addBankAccountRequest));
 
 		assertEquals("User with this id " + userId + " is not approved", notAllowedOperationException.getMessage());
+	}
+
+	@Test
+	void isUserApproved() {
+		Principal principal = mock(Principal.class);
+
+		User user = new User("firstName", "lastName", "password", "email", "phone", new Role(Constants.USER_ROLE));
+		user.setIsApproved(false);
+
+		when(userRepository.findByEmail(principal.getName())).thenReturn(Optional.of(user));
+
+		boolean isApproved = userService.isCurrentUserApproved(principal);
+
+		assertTrue(isApproved);
 	}
 
 }

@@ -28,6 +28,12 @@ public class ManagerController {
         return ResponseEntity.ok(unapprovedUsers);
     }
 
+    @GetMapping("/approvedUsers")
+    public ResponseEntity<List<UserDto>> getApprovedUsers() {
+        List<UserDto> unapprovedUsers = userService.getApprovedUsers();
+        return ResponseEntity.ok(unapprovedUsers);
+    }
+
     @PostMapping("/approveUser/{id}")
     public ResponseEntity<String> approveUser(@PathVariable Long id) {
         userService.approveUserById(id);

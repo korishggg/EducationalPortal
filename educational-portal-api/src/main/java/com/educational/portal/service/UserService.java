@@ -77,6 +77,14 @@ public class UserService {
 							 .toList();
 	}
 
+	public List<UserDto> getApprovedUsers() {
+		Role role = roleService.getRoleByName(Constants.USER_ROLE);
+		return userRepository.findUsersByIsApprovedAndRole(true, role)
+				.stream()
+				.map(UserDto::convertUserToUserDto)
+				.toList();
+	}
+
 	public void approveUserById(Long id) {
 		User user = findUserById(id);
 		user.setIsApproved(true);
@@ -143,5 +151,10 @@ public class UserService {
 	public UserInfoDto getUserInfoForAuthorizedUser(Principal principal) {
 		User user = findByEmail(principal.getName());
 		return UserInfoDto.convertUserToUserDto(user);
+	}
+
+	public boolean isCurrentUserApproved(Principal principal) {
+		User user = findByEmail(principal.getName());
+		return user.isApproved();
 	}
 }

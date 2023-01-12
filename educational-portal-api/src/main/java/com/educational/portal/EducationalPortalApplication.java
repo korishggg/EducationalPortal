@@ -100,5 +100,13 @@ public class EducationalPortalApplication implements CommandLineRunner {
 		Group group = new Group("Hello", userManager, category, userInstroctor);
 		group.addUser(userManager);
 		groupRepository.save(group);
+
+		Group group1 = new Group("Test Group 1", userManager, category, userInstroctor);
+		Group group2 = new Group("Test Group 2", userManager, category, userInstroctor);
+		Group group3 = new Group("Test Group 3", userManager, category, userInstroctor);
+
+		groupRepository.save(group1);
+		groupRepository.save(group2);
+		groupRepository.save(group3);
 	}
 }
