@@ -44,4 +44,9 @@ public class ManagerController {
         userService.assignInstructorByUserId(id);
         return ResponseEntity.ok("User with this id = " + id + " been assigned with " + Constants.INSTRUCTOR_ROLE + " role");
     }
+    @GetMapping("/instructors")
+    public ResponseEntity<?> getAllInstructors() {
+       List<UserDto> instructors = userService.getAllInstructors();
+        return ResponseEntity.ok(instructors);
+    }
 }

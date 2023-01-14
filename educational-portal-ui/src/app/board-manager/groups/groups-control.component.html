@@ -1,3 +1,33 @@
 <div class="col">
-  <h4>Groups Control works fine!</h4>
+  <div class="user-button-options">
+    <h1>List of Groups</h1>
+    <button type="button"
+            class="btn btn-primary"
+            (click)="openForm()">
+      Create Group
+    </button>
+    <div class="group-controls-table">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Group Name</th>
+          <th scope="col">Category</th>
+          <th scope="col">Instructor</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let group of allGroups">
+          <th scope="row">{{group.id}}</th>
+          <td>{{group.name}}</td>
+          <td>{{group.category.name}}</td>
+          <td>{{group.instructor.email}}</td>
+          <td>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

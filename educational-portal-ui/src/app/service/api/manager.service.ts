@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import {User} from "../../modules/User";
 
 const API_URL = 'http://localhost:8080/manager/';
@@ -10,7 +10,8 @@ const API_URL = 'http://localhost:8080/manager/';
 })
 export class ManagerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getUnapprovedUsers(): Observable<User[]> {
     return this.http.get<User[]>(API_URL + 'unapprovedUsers')
@@ -18,6 +19,9 @@ export class ManagerService {
 
   getApprovedUsers(): Observable<User[]> {
     return this.http.get<User[]>(API_URL + 'approvedUsers')
+  }
+  getAllInstructors() :Observable<User[]> {
+    return this.http.get<User[]>(API_URL+ 'instructors')
   }
 
 }
