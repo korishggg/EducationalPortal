@@ -20,4 +20,11 @@ export class ManagerService {
     return this.http.get<User[]>(API_URL + 'approvedUsers')
   }
 
+  approveUser(userId: string): Observable<any> {
+    return this.http.put<any>(API_URL + 'approveUser/' + userId, null)
+  }
+
+  assignInstructor(userId: string): Observable<any> {
+    return this.http.put<any>(API_URL + 'assignInstructor/' + userId, null)
+  }
 }
