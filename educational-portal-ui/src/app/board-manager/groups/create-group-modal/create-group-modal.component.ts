@@ -6,13 +6,19 @@ import {CategoryService} from "../../../service/api/category.service";
 import {delay, forkJoin} from "rxjs";
 import {Category} from "../../../modules/Category";
 import {User} from "../../../modules/User";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CreateGroupRequest} from "../../../modules/CreateGroupRequest";
 
 @Component({
   selector: 'app-create-group-modal',
   templateUrl: './create-group-modal.component.html',
 })
 export class CreateGroupModalComponent {
-
+  createGroupForm = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    categoryId: new FormControl<number | null>(null, [Validators.required]),
+    instructorId: new FormControl<number | null>(null, []),
+  });
   instructors: User[] = [];
   categories: Category[] = [];
   isLoading: boolean = true;
@@ -34,7 +40,6 @@ export class CreateGroupModalComponent {
         error: err => console.log(err),
         complete: () => {
           this.isLoading = false;
-          console.log(this.instructors,this.categories);
         }
       })
   }
@@ -43,8 +48,23 @@ export class CreateGroupModalComponent {
     this.modal.dismiss();
   }
 
-  createGroup() {
-    console.log("create group action");
+  createGroup(): void {
+    const name = this.createGroupForm.value.name as string;
+    const categoryId = this.createGroupForm.value.categoryId as number;
+    const instructorId: number = this.createGroupForm.value.instructorId as number;
+    const createGroupRequest = new CreateGroupRequest(name, categoryId, instructorId);
+    console.log(createGroupRequest);
+
+    this.groupService.createGroup(createGroupRequest)
+      .subscribe(
+        res => {
+
+        },
+        error => {
+        },
+        () => {
+          this.closeModal();
+        });
   }
 }
 

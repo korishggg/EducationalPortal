@@ -22,7 +22,7 @@
         <th scope="row">{{group.id}}</th>
         <td>{{group.name}}</td>
         <td>{{group.category.name}}</td>
-        <td>{{group.instructor.email}}</td>
+        <td>{{group.instructor ? group.instructor.email : ''}}</td>
         <td></td>
       </tr>
       </tbody>

@@ -34,11 +34,14 @@ export class GroupsControlComponent implements OnInit {
   openCreateGroupModal() {
     const modal = this.modalService.open(CreateGroupModalComponent, {
       backdrop: 'static',
-      size: 'xl'
+      size: 'l'
     });
 
     modal.result
-      .then(_ => {})
-      .catch(() => {/** do nothing */})
+      .then(_ => {
+        this.fetchAllGroups()
+      })
+      .catch(() => {/** do nothing */
+      })
   }
 }
