@@ -9,13 +9,14 @@ import { BoardInstructorComponent } from './board-instructor/board-instructor.co
 import { BoardUserComponent } from './board-user/board-user.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import {HttpClientModule} from "@angular/common/http";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
 import {UsersControlComponent} from "./board-manager/users/users-control.component";
 import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
+import {CreateGroupModalComponent} from "./board-manager/groups/create-group-modal/create-group-modal.component";
 
 @NgModule({
   declarations: [
@@ -29,12 +30,14 @@ import {GroupsControlComponent} from "./board-manager/groups/groups-control.comp
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    CreateGroupModalComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule
   ],
   providers: [authInterceptorProviders],
