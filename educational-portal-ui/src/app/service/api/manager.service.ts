@@ -27,4 +27,8 @@ export class ManagerService {
   assignInstructor(userId: string): Observable<any> {
     return this.http.put<any>(API_URL + 'assignInstructor/' + userId, null)
   }
+
+  getAllInstructors() :Observable<User[]> {
+    return this.http.get<User[]>(API_URL+ 'instructors')
+  }
 }

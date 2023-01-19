@@ -79,7 +79,7 @@ public class GroupController {
 
 	@PostMapping("{groupId}/unAssignUser/{userId}")
 	public ResponseEntity<?> unAssignUsersToGroup(@PathVariable(name = "groupId") Long groupId,
-												@PathVariable(name = "userId") Long userId) {
+												  @PathVariable(name = "userId") Long userId) {
 		groupService.unAssignUserFromGroup(groupId, userId);
 		return ResponseEntity.ok("");
 	}

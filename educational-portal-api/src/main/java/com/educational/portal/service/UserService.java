@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -156,5 +157,12 @@ public class UserService {
 	public boolean isCurrentUserApproved(Principal principal) {
 		User user = findByEmail(principal.getName());
 		return user.isApproved();
+	}
+
+	public List<UserDto> getAllInstructors() {
+		return userRepository.findUsersByIsApprovedAndRoleName(true, Constants.INSTRUCTOR_ROLE)
+				.stream()
+				.map(UserDto::convertUserToUserDto)
+				.collect(Collectors.toList());
 	}
 }

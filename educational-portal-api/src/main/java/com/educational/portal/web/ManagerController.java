@@ -43,4 +43,9 @@ public class ManagerController {
         userService.assignInstructorByUserId(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/instructors")
+    public ResponseEntity<?> getAllInstructors() {
+        List<UserDto> instructors = userService.getAllInstructors();
+        return ResponseEntity.ok(instructors);
+    }
 }
