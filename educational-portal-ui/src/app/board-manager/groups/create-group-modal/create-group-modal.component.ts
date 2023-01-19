@@ -35,7 +35,6 @@ export class CreateGroupModalComponent {
         next: ([categories, instructors]: [Category[], User[]]) => {
           this.categories = categories;
           this.instructors = instructors;
-          delay(3)
         },
         error: err => console.log(err),
         complete: () => {
@@ -53,7 +52,6 @@ export class CreateGroupModalComponent {
     const categoryId = this.createGroupForm.value.categoryId as number;
     const instructorId: number = this.createGroupForm.value.instructorId as number;
     const createGroupRequest = new CreateGroupRequest(name, categoryId, instructorId);
-    console.log(createGroupRequest);
 
     this.groupService.createGroup(createGroupRequest)
       .subscribe(
