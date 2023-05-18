@@ -23,6 +23,10 @@ export class UserService {
     return this.http.get<boolean>(API_URL + 'isApproved')
   }
 
+  findByEmailOrSurname(searchEmailOrSurname: string, groupId: number): Observable<any> {
+    return this.http.get(API_URL + "search/" + groupId + "?findByEmailOrSurname=" + searchEmailOrSurname);
+  }
+
   uploadDocuments(passportFiles: File[], taxIdFiles: File[]): Observable<any> {
     const formData = new FormData();
 
@@ -41,6 +45,7 @@ export class UserService {
   isResourceForCurrentUserExistsForUser(): Observable<boolean> {
     return this.http.get<boolean>(API_URL + "documentsExists")
   }
+
   getAllResourcesForUser(userId: number): Observable<Resource[]> {
     return this.http.get<Resource[]>(API_URL + userId + "/resources");
   }
@@ -48,4 +53,5 @@ export class UserService {
   getAllInstructors() :Observable<User[]> {
     return this.http.get<User[]>(API_URL+ 'instructors')
   }
+
 }

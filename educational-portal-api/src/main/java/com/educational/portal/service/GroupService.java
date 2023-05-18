@@ -96,6 +96,9 @@ public class GroupService {
 		Group group = findById(groupId);
 		User user = userService.findUserById(userId);
 		if (user.getRole().getName().equals(Constants.USER_ROLE)) {
+			if (group.getUsers().contains(user)) {
+				throw new NotAllowedOperationException("User with id " + userId + " is already in the group");
+			}
 			group.addUser(user);
 			groupRepository.save(group);
 		} else throw new NotAllowedOperationException("User with id " + userId + " have no user role");

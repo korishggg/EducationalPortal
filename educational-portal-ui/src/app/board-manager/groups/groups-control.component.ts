@@ -8,6 +8,7 @@ import {CategoryService} from "../../service/api/category.service";
 import {ManagerService} from "../../service/api/manager.service";
 import {Category} from "../../modules/Category";
 import {User} from "../../modules/User";
+import {UpdateGroupModalComponent} from "./add-user-to-group-modal/update-group-modal.component";
 
 @Component({
   selector: 'app-groups-control',
@@ -65,4 +66,22 @@ export class GroupsControlComponent implements OnInit {
         }
       })
   }
+
+  updateGroupModal(group: Group) {
+    const modal = this.modalService.open(UpdateGroupModalComponent, {
+      backdrop: 'static',
+      size: 'l'
+    });
+
+    const updateGroupModalComponent = modal.componentInstance as UpdateGroupModalComponent;
+    updateGroupModalComponent.group = group;
+
+    modal.result
+      .then(_ => {
+        this.fetchAllGroups()
+      })
+      .catch(() => {/** do nothing */
+      })
+  }
+
 }

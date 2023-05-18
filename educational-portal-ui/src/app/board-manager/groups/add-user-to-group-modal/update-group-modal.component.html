@@ -1,0 +1,33 @@
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Update group</h4>
+  </div>
+  <div class="modal-body">
+    <p><strong>Group Name:</strong> {{ group.name }}</p>
+    <p><strong>Category:</strong> {{ group.category.name }}</p>
+    <p><strong>Instructor:</strong> {{ group.instructor.lastName }}</p>
+    <div class="form-group">
+      <h4>
+        <label for="searchInput">Add user:</label>
+      </h4>
+      <div class="input-group">
+        <input type="text" class="form-control" id="searchInput" [(ngModel)]="searchEmailOrSurname"
+               (keyup)="searchUsers()" placeholder="Enter email or surname">
+      </div>
+      <div *ngIf="matchedUsers.length > 0">
+        <ul class="list-group">
+          <li *ngFor="let user of matchedUsers" class="list-group-item" (click)="addUserToGroup(user)">
+            {{ user.firstName }} - {{ user.lastName }} - {{ user.email }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <h4>Existing Users:</h4>
+    <ul class="list-group">
+      <li *ngFor="let user of group.users" class="list-group-item">
+        {{ user.firstName }} - {{ user.lastName }} {{user.email}}
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+  </div>

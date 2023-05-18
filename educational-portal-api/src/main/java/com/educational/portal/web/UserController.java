@@ -6,6 +6,7 @@ import com.educational.portal.domain.dto.ResourceDto;
 import com.educational.portal.domain.dto.UserInfoDto;
 import com.educational.portal.exception.NotAllowedOperationException;
 import com.educational.portal.service.ResourceService;
+import com.educational.portal.domain.dto.UserNameSurnameEmailDto;
 import com.educational.portal.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,13 @@ public class UserController {
 		var isApproved = userService.isCurrentUserApproved(principal);
 		return ResponseEntity.ok()
 				.body(isApproved);
+	}
+
+	@GetMapping(value = "/search/{groupId}")
+	public ResponseEntity<?> findByEmailOrSurname(@RequestParam(value = "findByEmailOrSurname") String findByEmailOrSurname,
+												 @PathVariable Long groupId) {
+		List<UserNameSurnameEmailDto> users = userService.findUsersByEmailOrLastName(findByEmailOrSurname, groupId);
+		return ResponseEntity.ok(users);
 	}
 
 	@GetMapping("/instructors")

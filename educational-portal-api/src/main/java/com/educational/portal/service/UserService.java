@@ -7,10 +7,15 @@ import com.educational.portal.domain.dto.RefreshTokenRequest;
 import com.educational.portal.domain.dto.RegistrationRequest;
 import com.educational.portal.domain.dto.UserDto;
 import com.educational.portal.domain.dto.UserInfoDto;
+import com.educational.portal.domain.dto.UserNameSurnameEmailDto;
 import com.educational.portal.domain.entity.Resource;
 import com.educational.portal.domain.entity.Role;
 import com.educational.portal.domain.entity.User;
-import com.educational.portal.exception.*;
+import com.educational.portal.exception.AlreadyExistsException;
+import com.educational.portal.exception.IncorrectPasswordException;
+import com.educational.portal.exception.NotAllowedOperationException;
+import com.educational.portal.exception.NotEnoughPermissionException;
+import com.educational.portal.exception.NotFoundException;
 import com.educational.portal.repository.ResourceRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.security.JwtProvider;
@@ -251,4 +256,13 @@ public class UserService {
 		Optional<Resource> resource = resourceRepository.findResourceByUser(user.get().getId());
 		return resource.isPresent();
 	}
+
+	public List<UserNameSurnameEmailDto> findUsersByEmailOrLastName(String emailOrLastName, Long groupId) {
+		String emailOrLastNameValue = "%" + emailOrLastName + "%";
+		return userRepository.findUsersByEmailLikeOrLastNameAndIsApprovedAndRoleNameAndNotInGroupId(emailOrLastNameValue, emailOrLastNameValue, true, Constants.USER_ROLE, groupId)
+				.stream()
+				.map(UserNameSurnameEmailDto::convertUserToUserDto)
+				.collect(Collectors.toList());
+	}
+
 }
