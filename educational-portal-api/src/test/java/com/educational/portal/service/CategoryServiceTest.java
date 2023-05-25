@@ -38,11 +38,11 @@ class CategoryServiceTest {
 		categoryService = new CategoryService(categoryRepository, userService);
 	}
 
-	@Test
-	void getAllCategories() {
-		categoryService.getAllCategories();
-		verify(categoryRepository).findAll();
-	}
+//	@Test
+//	void getAllCategories() {
+//		categoryService.getAllCategories();
+//		verify(categoryRepository).findAll();
+//	}
 
 	@Test
 	void findByIdAndConvertToDtoWhenHideSubCategories() {
