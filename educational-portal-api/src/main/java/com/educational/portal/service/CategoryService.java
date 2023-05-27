@@ -27,19 +27,16 @@ public class CategoryService {
 		this.userService = userService;
 	}
 
+	//TODO OPTIMIZE PERFOMANCE
 	public List<CategoryDto> getAllCategories(boolean isHideSubCategories) {
-		List<Category> allCategories;
 		if (isHideSubCategories) {
-			allCategories = categoryRepository.findCategoriesByParentIsNull();
-			for (Category category : allCategories) {
-				category.setSubCategories(new ArrayList<>());
-			}
-			return allCategories.stream()
+			return categoryRepository.findCategoriesByParentIsNull()
+					.stream()
+					.peek(category -> category.setSubCategories(new ArrayList<>()))
 					.map(CategoryDto::convertCategoryToCategoryDto)
 					.toList();
 		} else {
-			allCategories = categoryRepository.findAll();
-
+			List<Category> allCategories = categoryRepository.findAll();
 			List<CategoryDto> categories = new ArrayList<>();
 			Set<Long> processedCategoryIds = new HashSet<>();
 
