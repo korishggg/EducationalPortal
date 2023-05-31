@@ -1,0 +1,30 @@
+<div class="modal-body">
+  <div class="form-group">
+    <label for="passportFileUpload">Add Passport Files:</label>
+    <div class="custom-file">
+      <input id="passportFileUpload" type="file" class="custom-file-input" multiple (change)="onPassportFileSelect($event)" accept="image/*">
+      <label class="custom-file-label" for="passportFileUpload">Choose files</label>
+    </div>
+    <div class="mt-2">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let file of passportFiles">{{ file.name }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="taxIdFileUpload">Add Tax ID Files:</label>
+    <div class="custom-file">
+      <input id="taxIdFileUpload" type="file" class="custom-file-input" multiple (change)="onTaxIdFileSelect($event)" accept="image/*">
+      <label class="custom-file-label" for="taxIdFileUpload">Choose files</label>
+    </div>
+    <div class="mt-2">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let file of taxIdFiles">{{ file.name }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="uploadFiles()" [disabled]="isFilesUploaded()">Submit</button>
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+  </div>
+</div>

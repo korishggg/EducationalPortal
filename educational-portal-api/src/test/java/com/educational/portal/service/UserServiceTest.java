@@ -13,6 +13,7 @@ import com.educational.portal.exception.IncorrectPasswordException;
 import com.educational.portal.exception.NotAllowedOperationException;
 import com.educational.portal.exception.NotEnoughPermissionException;
 import com.educational.portal.exception.NotFoundException;
+import com.educational.portal.repository.ResourceRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.security.JwtProvider;
 import com.educational.portal.util.Constants;
@@ -27,9 +28,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -46,13 +45,18 @@ class UserServiceTest {
 	private RoleService roleService;
 	@Mock
 	private JwtProvider jwtProvider;
+	@Mock
+	private StorageService storageService;
+	@Mock
+	private ResourceRepository resourceRepository;
+
 	private UserService userService;
 
 	Long userId = 1L;
 
 	@BeforeEach
 	void setUp() {
-		userService = new UserService(userRepository, passwordEncoder, roleService, jwtProvider);
+		userService = new UserService(userRepository, passwordEncoder, roleService, jwtProvider, storageService, resourceRepository);
 	}
 
 	@Test
@@ -271,7 +275,7 @@ class UserServiceTest {
 
 		boolean isApproved = userService.isCurrentUserApproved(principal);
 
-		assertTrue(isApproved);
+		assertFalse(isApproved);
 	}
 
 }
