@@ -58,12 +58,8 @@
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>
             <td>{{user.phone}}</td>
-            <td>TDB</td>
             <td>
-              <button type="button" class="btn btn-primary">TBD!</button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-primary" (click)="assignInstructor(user.id)">Assign instructor
+              <button type="button" class="btn btn-primary" (click)="openViewDocumentsModal(user.id)">View Documents
               </button>
             </td>
           </tr>
@@ -75,7 +71,10 @@
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>
             <td>{{user.phone}}</td>
-            <td><strong>TBD!</strong></td>
+            <td>
+              <button type="button" class="btn btn-primary" (click)="openViewDocumentsModal(user.id)">View Documents
+              </button>
+            </td>
             <td>
               <button type="button" class="btn btn-primary" (click)="approveUser(user.id)">Approve</button>
             </td>

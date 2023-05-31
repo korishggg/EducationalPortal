@@ -20,6 +20,7 @@ import {CreateGroupModalComponent} from "./board-manager/groups/create-group-mod
 import {
   UploadDocumentsModalComponent
 } from "./board-user/upload-documents-modal/upload-documents-modal.component";
+import {ViewDocumentsModalComponent} from "./board-manager/users/view-documents-modal/view-documents-modal.component";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {
     HomeComponent,
     ProfileComponent,
     CreateGroupModalComponent,
-    UploadDocumentsModalComponent
+    UploadDocumentsModalComponent,
+    ViewDocumentsModalComponent
   ],
   imports: [
     HttpClientModule,

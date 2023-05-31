@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserInfo} from "../../modules/UserInfo";
+import {Resource} from "../../modules/Resource";
 
 const API_URL = 'http://localhost:8080/users/';
 
@@ -39,6 +40,9 @@ export class UserService {
 
   isResourceForCurrentUserExistsForUser(): Observable<boolean> {
     return this.http.get<boolean>(API_URL + "documentsExists")
+  }
+  getAllResourcesForUser(userId: number): Observable<Resource[]> {
+    return this.http.get<Resource[]>(API_URL + userId + "/resources");
   }
 
 }

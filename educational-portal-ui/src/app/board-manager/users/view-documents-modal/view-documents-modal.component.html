@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title">View Documents</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <ul>
+    <li *ngFor="let taxIdFile of taxIdFiles">
+      <div class="card mb-3">
+        <div class="card-body">
+          <img [src]="getBase64Image(taxIdFile)" class="card-img-top" alt="Tax ID File">
+        </div>
+      </div>
+    </li>
+    <li *ngFor="let passportFile of passportFiles">
+      <div class="card mb-3">
+        <div class="card-body">
+          <img [src]="getBase64Image(passportFile)" class="card-img-top" alt="Passport File">
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+</div>
