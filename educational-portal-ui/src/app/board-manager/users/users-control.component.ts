@@ -59,4 +59,14 @@ export class UsersControlComponent implements OnInit {
       }
     )
   }
+
+  assignInstructor(userId: number) {
+    this.managerService.assignInstructor(userId.toString()).subscribe(
+      () => {
+        this.fetchApprovedUsers();
+      }, error => {
+        console.log(error);
+      }
+    )
+  }
 }
