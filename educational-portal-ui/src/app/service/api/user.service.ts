@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserInfo} from "../../modules/UserInfo";
 import {Resource} from "../../modules/Resource";
+import {User} from "../../modules/User";
 
 const API_URL = 'http://localhost:8080/users/';
 
@@ -37,7 +38,6 @@ export class UserService {
     return this.http.post(API_URL + "uploadDocuments", formData, {headers});
   }
 
-
   isResourceForCurrentUserExistsForUser(): Observable<boolean> {
     return this.http.get<boolean>(API_URL + "documentsExists")
   }
@@ -45,4 +45,7 @@ export class UserService {
     return this.http.get<Resource[]>(API_URL + userId + "/resources");
   }
 
+  getAllInstructors() :Observable<User[]> {
+    return this.http.get<User[]>(API_URL+ 'instructors')
+  }
 }

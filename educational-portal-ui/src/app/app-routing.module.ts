@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {BoardUserComponent} from "./board-user/board-user.component";
@@ -10,15 +10,17 @@ import {HomeComponent} from "./home/home.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {UsersControlComponent} from "./board-manager/users/users-control.component";
 import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
+import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
 
 // TODO split child routings and import them
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'user', component: BoardUserComponent },
-  { path: 'manager',
+  {path: 'home', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'profile', component: ProfileComponent},
+  {path: 'user', component: BoardUserComponent},
+  {
+    path: 'manager',
     component: BoardManagerComponent,
     children: [
       {
@@ -31,13 +33,22 @@ const routes: Routes = [
       }
     ]
   },
-  { path: 'instructor', component: BoardInstructorComponent },
-  { path: 'admin', component: BoardAdminComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  {
+    path: 'instructor', component: BoardInstructorComponent,
+    children: [
+      {
+        path: 'groups',
+        component: GroupsControlInstructorComponent
+      }
+    ]
+  },
+  {path: 'admin', component: BoardAdminComponent},
+  {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
