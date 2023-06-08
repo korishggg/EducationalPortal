@@ -17,6 +17,9 @@ import {authInterceptorProviders} from "./helpers/auth.interceptor";
 import {UsersControlComponent} from "./board-manager/users/users-control.component";
 import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
 import {CreateGroupModalComponent} from "./board-manager/groups/create-group-modal/create-group-modal.component";
+import {
+  UploadDocumentsModalComponent
+} from "./board-user/upload-documents-modal/upload-documents-modal.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import {CreateGroupModalComponent} from "./board-manager/groups/create-group-mod
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    CreateGroupModalComponent
+    CreateGroupModalComponent,
+    UploadDocumentsModalComponent
   ],
   imports: [
     HttpClientModule,

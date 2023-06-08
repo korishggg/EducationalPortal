@@ -15,5 +15,4 @@ public class ContactNumberValidator implements ConstraintValidator<ContactNumber
         return phone != null && phone.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
                 && (phone.length() > 8) && (phone.length() < 14);
     }
-
 }
