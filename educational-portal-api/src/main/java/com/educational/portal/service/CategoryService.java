@@ -10,10 +10,7 @@ import com.educational.portal.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -26,16 +23,47 @@ public class CategoryService {
 		this.userService = userService;
 	}
 
-	public List<CategoryDto> getAllCategories() {
-		return categoryRepository.findAll()
-								 .stream()
-								 .map(CategoryDto::convertCategoryToCategoryDto)
-								 .collect(Collectors.toList());
+	public List<CategoryDto> getAllCategories(boolean isHideSubCategories) {
+		if (isHideSubCategories) {
+			return categoryRepository.findCategoriesByParentIsNull()
+					.stream()
+					.peek(category -> category.setSubCategories(new ArrayList<>()))
+					.map(CategoryDto::convertCategoryToCategoryDto)
+					.toList();
+		} else {
+			List<Category> allCategories = categoryRepository.findAll();
+			List<CategoryDto> categories = new ArrayList<>();
+			Set<Long> processedCategoryIds = new HashSet<>();
+
+			for (Category category : allCategories) {
+				if (!processedCategoryIds.contains(category.getId())) {
+					CategoryDto categoryDto = convertCategoryToCategoryDto(category, processedCategoryIds);
+					categories.add(categoryDto);
+				}
+			}
+			return categories;
+		}
+	}
+
+	private CategoryDto convertCategoryToCategoryDto(Category category, Set<Long> processedCategoryIds) {
+		CategoryDto categoryDto = CategoryDto.convertCategoryToCategoryDto(category);
+		processedCategoryIds.add(categoryDto.getId());
+
+		List<CategoryDto> subcategoryDtos = new ArrayList<>();
+		for (Category subcategory : category.getSubCategories()) {
+			if (!processedCategoryIds.contains(subcategory.getId())) {
+				CategoryDto subcategoryDto = convertCategoryToCategoryDto(subcategory, processedCategoryIds);
+				subcategoryDtos.add(subcategoryDto);
+			}
+		}
+
+		categoryDto.setSubcategories(subcategoryDtos);
+		return categoryDto;
 	}
 
 	public CategoryDto findByIdAndConvertToDto(Long id, boolean isHideSubCategories) {
 		Category category = findById(id);
-		if(isHideSubCategories){
+		if (isHideSubCategories) {
 			category.setSubCategories(new ArrayList<>());
 		}
 		return CategoryDto.convertCategoryToCategoryDto(category);
@@ -52,7 +80,7 @@ public class CategoryService {
 	private void createCategoryValidation(String categoryName) {
 		Optional<Category> optionalCategory = categoryRepository.findCategoryByName(categoryName);
 		if (optionalCategory.isPresent()) {
-			throw new AlreadyExistsException("Category With this name " + categoryName +" already exists");
+			throw new AlreadyExistsException("Category With this name " + categoryName + " already exists");
 		}
 	}
 
