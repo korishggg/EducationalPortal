@@ -37,9 +37,9 @@ export class ViewDocumentsModalComponent implements OnInit {
     this.userService.getAllResourcesForUser(userId).subscribe(
       (resources: Resource[]) => {
         resources.forEach((resource) => {
-          this.resourceService.getFileByResourceId(resource.id).subscribe(
+          this.resourceService.getFileById(resource.id).subscribe(
             (data: ArrayBuffer) => {
-              if (resource.type === "taxIdType") {
+              if (resource.type === "TAX_ID") {
                 this.taxIdFiles.push(data);
               } else {
                 this.passportFiles.push(data);

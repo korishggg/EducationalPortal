@@ -18,7 +18,6 @@ public class ResourceService {
 		this.storageService = storageService;
 	}
 
-
 	public List<ResourceDto> getAllResourcesForUser(Long userId) {
 
 		return resourceRepository.findAllByUser(userId)
@@ -27,7 +26,7 @@ public class ResourceService {
 				.toList();
 	}
 
-	public byte[] getFileByResourceId(Long resourceId) {
+	public byte[] getFileById(Long resourceId) {
 		Resource resource = resourceRepository.findById(resourceId)
 				.orElseThrow(() -> new NotFoundException("Resource with id " + resourceId + " is not found"));
 		return this.storageService.downloadFile(resource.getFileName());

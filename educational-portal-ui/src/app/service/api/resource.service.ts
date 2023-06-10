@@ -12,9 +12,9 @@ export class ResourceService {
   constructor(private http: HttpClient) {
   }
 
-  getFileByResourceId(resourceId: number): Observable<ArrayBuffer> {
+  getFileById(resourceId: number): Observable<ArrayBuffer> {
     const headers = new HttpHeaders({'Accept': 'application/octet-stream'});
-    return this.http.get(API_URL + 'getResource/' + resourceId, {responseType: 'arraybuffer', headers: headers});
+    return this.http.get(API_URL + resourceId + "/file", {responseType: 'arraybuffer', headers: headers});
   }
 
 }

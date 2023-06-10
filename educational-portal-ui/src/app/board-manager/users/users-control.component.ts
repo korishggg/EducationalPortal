@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ManagerService} from "../../service/api/manager.service";
 import {User} from "../../modules/User";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CreateGroupModalComponent} from "../groups/create-group-modal/create-group-modal.component";
 import {ViewDocumentsModalComponent} from "./view-documents-modal/view-documents-modal.component";
 
 @Component({
@@ -17,7 +16,7 @@ export class UsersControlComponent implements OnInit {
   showApprovedUsers: boolean = false;
   isLoading = true;
 
-  constructor(private managerService: ManagerService, private modalService: NgbModal,) {
+  constructor(private managerService: ManagerService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -76,15 +75,5 @@ export class UsersControlComponent implements OnInit {
       })
       .catch(() => {/** do nothing */
       })
-  }
-
-  assignInstructor(userId: number) {
-    this.managerService.assignInstructor(userId.toString()).subscribe(
-      () => {
-        this.fetchApprovedUsers();
-      }, error => {
-        console.log(error);
-      }
-    )
   }
 }

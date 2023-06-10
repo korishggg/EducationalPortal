@@ -18,9 +18,9 @@ public class ResourceController {
 		this.resourceService = resourceService;
 	}
 
-	@GetMapping("/getResource/{fileId}")
-	public ResponseEntity<ByteArrayResource> getFileByResourceId(@PathVariable Long fileId) {
-		byte[] data = resourceService.getFileByResourceId(fileId);
+	@GetMapping("/{id}/file")
+	public ResponseEntity<ByteArrayResource> getFileById(@PathVariable Long id) {
+		byte[] data = resourceService.getFileById(id);
 		ByteArrayResource resource = new ByteArrayResource(data);
 		return ResponseEntity
 				.ok()
