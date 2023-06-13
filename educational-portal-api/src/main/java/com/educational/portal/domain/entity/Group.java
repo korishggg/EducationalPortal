@@ -25,10 +25,10 @@ public class Group extends BaseEntity {
 	@ManyToMany
 	@JoinTable(name = "user_educational_group",
 			joinColumns = {
-					@JoinColumn(name = "user_id", referencedColumnName = "id")
+					@JoinColumn(name = "group_id", referencedColumnName = "id")
 			},
 			inverseJoinColumns = {
-					@JoinColumn(name = "group_id", referencedColumnName = "id")
+					@JoinColumn(name = "user_id", referencedColumnName = "id")
 			}
 	)
 	private List<User> users = new ArrayList<>();

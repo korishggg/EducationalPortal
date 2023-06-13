@@ -20,6 +20,7 @@ import { UploadDocumentsModalComponent } from "./board-user/upload-documents-mod
 import {ViewDocumentsModalComponent} from "./board-manager/users/view-documents-modal/view-documents-modal.component";
 import {CreateGroupModalComponent} from "./modals/create-group-modal/create-group-modal.component";
 import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
+import {UpdateGroupModalComponent} from "./board-manager/groups/add-user-to-group-modal/update-group-modal.component";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups
     CreateGroupModalComponent,
     UploadDocumentsModalComponent,
     ViewDocumentsModalComponent,
-    GroupsControlInstructorComponent
+    GroupsControlInstructorComponent,
+    UpdateGroupModalComponent
   ],
   imports: [
     HttpClientModule,
