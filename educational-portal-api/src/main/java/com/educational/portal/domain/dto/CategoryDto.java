@@ -17,11 +17,12 @@ public class CategoryDto {
 	private String name;
 	private List<CategoryDto> subcategories;
 
-	public static CategoryDto convertCategoryToCategoryDto(Category category) {
+	//TODO refactor later using lazy loading
+	public static CategoryDto convertCategoryToCategoryDtoWithoutDuplication(Category category) {
 		List<CategoryDto> subcategories = category.getSubCategories()
-												  .stream()
-												  .map(CategoryDto::convertCategoryToCategoryDto)
-												  .collect(Collectors.toList());
+				.stream()
+				.map(CategoryDto::convertCategoryToCategoryDtoWithoutDuplication)
+				.collect(Collectors.toList());
 		return new CategoryDto(category.getId(), category.getName(), subcategories);
 	}
 }

@@ -33,7 +33,7 @@ public class GroupDto {
 		return new GroupDto(
 				group.getId(),
 				group.getName(),
-				CategoryDto.convertCategoryToCategoryDto(category),
+				CategoryDto.convertCategoryToCategoryDtoWithoutDuplication(category),
 				userDtos,
 				userDto);
 	}

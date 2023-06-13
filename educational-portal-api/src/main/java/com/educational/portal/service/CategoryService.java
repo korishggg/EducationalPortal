@@ -28,7 +28,7 @@ public class CategoryService {
 			return categoryRepository.findCategoriesByParentIsNull()
 					.stream()
 					.peek(category -> category.setSubCategories(new ArrayList<>()))
-					.map(CategoryDto::convertCategoryToCategoryDto)
+					.map(CategoryDto::convertCategoryToCategoryDtoWithoutDuplication)
 					.toList();
 		} else {
 			List<Category> allCategories = categoryRepository.findAll();
@@ -46,7 +46,7 @@ public class CategoryService {
 	}
 
 	private CategoryDto convertCategoryToCategoryDto(Category category, Set<Long> processedCategoryIds) {
-		CategoryDto categoryDto = CategoryDto.convertCategoryToCategoryDto(category);
+		CategoryDto categoryDto = CategoryDto.convertCategoryToCategoryDtoWithoutDuplication(category);
 		processedCategoryIds.add(categoryDto.getId());
 
 		List<CategoryDto> subcategoryDtos = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CategoryService {
 		if (isHideSubCategories) {
 			category.setSubCategories(new ArrayList<>());
 		}
-		return CategoryDto.convertCategoryToCategoryDto(category);
+		return CategoryDto.convertCategoryToCategoryDtoWithoutDuplication(category);
 	}
 
 	public CategoryDto createCategory(Principal principal, CreateCategoryRequest createCategoryRequest) {
@@ -74,7 +74,7 @@ public class CategoryService {
 		User user = userService.findByEmail(principal.getName());
 		Category category = new Category(createCategoryRequest.getName(), user);
 		categoryRepository.save(category);
-		return CategoryDto.convertCategoryToCategoryDto(category);
+		return CategoryDto.convertCategoryToCategoryDtoWithoutDuplication(category);
 	}
 
 	private void createCategoryValidation(String categoryName) {
