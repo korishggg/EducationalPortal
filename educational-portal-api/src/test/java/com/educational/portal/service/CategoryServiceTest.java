@@ -14,7 +14,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,9 +43,48 @@ class CategoryServiceTest {
 	}
 
 	@Test
-	void getAllCategories() {
-		categoryService.getAllCategories();
+	void getAllCategoriesWhereIsHideSubCategories() {
+		boolean isHideSubCategories = true;
+		List<Category> categories = new ArrayList<>();
+		categories.add(new Category("test1", null, null));
+		categories.add(new Category("test12", null, null));
+		when(categoryRepository.findCategoriesByParentIsNull()).thenReturn(categories);
+
+		List<CategoryDto> result = categoryService.getAllCategories(isHideSubCategories);
+
+		verify(categoryRepository).findCategoriesByParentIsNull();
+		assertEquals(2, result.size());
+		for (CategoryDto categoryDto : result) {
+			assertEquals(new ArrayList<>(), categoryDto.getSubcategories());
+		}
+
+	}
+
+	@Test
+	void getAllCategoriesWhereNotHideSubCategories() {
+		boolean isHideSubCategories = false;
+		List<Category> categories = new ArrayList<>();
+		categories.add(new Category("test1", null, null));
+		categories.add(new Category("test2", null, null));
+		when(categoryRepository.findAll()).thenReturn(categories);
+
+		List<CategoryDto> expected = new ArrayList<>();
+		Set<Long> processedCategoryIds = new HashSet<>();
+
+		for (Category category : categories) {
+			if (!processedCategoryIds.contains(category.getId())) {
+				CategoryDto categoryDto = new CategoryDto();
+				categoryDto.setName(category.getName());
+				categoryDto.setSubcategories(new ArrayList<>());
+				expected.add(categoryDto);
+				processedCategoryIds.add(category.getId());
+			}
+		}
+
+		List<CategoryDto> result = categoryService.getAllCategories(isHideSubCategories);
+
 		verify(categoryRepository).findAll();
+		assertEquals(expected.size(), result.size());
 	}
 
 	@Test

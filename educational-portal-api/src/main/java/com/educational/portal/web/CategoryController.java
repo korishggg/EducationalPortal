@@ -37,8 +37,8 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<CategoryDto>> getAllCategories() {
-		List<CategoryDto> categories = categoryService.getAllCategories();
+	public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam(value = "isHideSubCategories") boolean isHideSubCategories) {
+		List<CategoryDto> categories = categoryService.getAllCategories(isHideSubCategories);
 		return ResponseEntity.ok(categories);
 	}
 
