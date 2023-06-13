@@ -1,13 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {GroupService} from "../../../service/api/group.service";
-import {ManagerService} from "../../../service/api/manager.service";
-import {CategoryService} from "../../../service/api/category.service";
-import {delay, forkJoin} from "rxjs";
-import {Category} from "../../../modules/Category";
-import {User} from "../../../modules/User";
+import {GroupService} from "../../service/api/group.service";
+import {Category} from "../../modules/Category";
+import {User} from "../../modules/User";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {CreateGroupRequest} from "../../../modules/CreateGroupRequest";
+import {CreateGroupRequest} from "../../modules/CreateGroupRequest";
 
 @Component({
   selector: 'app-create-group-modal',
@@ -24,23 +21,7 @@ export class CreateGroupModalComponent {
   isLoading: boolean = true;
 
   constructor(private modal: NgbActiveModal,
-              private groupService: GroupService,
-              private managerService: ManagerService,
-              private categoryService: CategoryService) {
-  }
-
-  ngOnInit() {
-    forkJoin([this.categoryService.getAllCategories(), this.managerService.getAllInstructors()])
-      .subscribe({
-        next: ([categories, instructors]: [Category[], User[]]) => {
-          this.categories = categories;
-          this.instructors = instructors;
-        },
-        error: err => console.log(err),
-        complete: () => {
-          this.isLoading = false;
-        }
-      })
+              private groupService: GroupService) {
   }
 
   closeModal() {

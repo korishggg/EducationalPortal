@@ -16,11 +16,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
 import {UsersControlComponent} from "./board-manager/users/users-control.component";
 import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
-import {CreateGroupModalComponent} from "./board-manager/groups/create-group-modal/create-group-modal.component";
-import {
-  UploadDocumentsModalComponent
-} from "./board-user/upload-documents-modal/upload-documents-modal.component";
+import { UploadDocumentsModalComponent } from "./board-user/upload-documents-modal/upload-documents-modal.component";
 import {ViewDocumentsModalComponent} from "./board-manager/users/view-documents-modal/view-documents-modal.component";
+import {CreateGroupModalComponent} from "./modals/create-group-modal/create-group-modal.component";
+import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
 
 @NgModule({
   declarations: [
@@ -37,7 +36,8 @@ import {ViewDocumentsModalComponent} from "./board-manager/users/view-documents-
     ProfileComponent,
     CreateGroupModalComponent,
     UploadDocumentsModalComponent,
-    ViewDocumentsModalComponent
+    ViewDocumentsModalComponent,
+    GroupsControlInstructorComponent
   ],
   imports: [
     HttpClientModule,

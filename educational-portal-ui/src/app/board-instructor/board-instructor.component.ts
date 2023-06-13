@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-board-instructor',
   templateUrl: './board-instructor.component.html',
   styleUrls: ['./board-instructor.component.scss']
 })
-export class BoardInstructorComponent {
+export class BoardInstructorComponent implements OnInit{
 
-  // TODO IMPLEMENT Instructor RELATED LOGIC
+  constructor(private router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.router.navigate(["instructor/groups"])
+  }
 }

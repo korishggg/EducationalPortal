@@ -1,27 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CreateGroupModalComponent} from "../../modals/create-group-modal/create-group-modal.component";
-import {Group} from "../../modules/Group";
-import {GroupService} from "../../service/api/group.service";
-import {forkJoin} from "rxjs";
-import {CategoryService} from "../../service/api/category.service";
-import {ManagerService} from "../../service/api/manager.service";
-import {Category} from "../../modules/Category";
+import {Component, OnInit} from "@angular/core";
 import {User} from "../../modules/User";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {GroupService} from "../../service/api/group.service";
+import {UserService} from "../../service/api/user.service";
+import {Group} from "../../modules/Group";
+import {CreateGroupModalComponent} from "../../modals/create-group-modal/create-group-modal.component";
+import {Category} from "../../modules/Category";
+import {CategoryService} from "../../service/api/category.service";
+import {forkJoin} from "rxjs";
 
 @Component({
-  selector: 'app-groups-control',
-  templateUrl: './groups-control.component.html',
-  styleUrls: ['./groups-control.component.scss']
+  selector: 'app-groups-instructor-control',
+  templateUrl: './groups-control-instructor.component.html'
 })
-export class GroupsControlComponent implements OnInit {
+export class GroupsControlInstructorComponent implements OnInit {
+  allGroupsForInstructor: Group[] = [];
 
-  allGroups: Group[] = [];
+  allCategories: Category[] = [];
+  allInstructors: User[] = [];
 
-  constructor(private modalService: NgbModal,
-              private groupService: GroupService,
-              private managerService: ManagerService,
-              private categoryService: CategoryService) {
+  constructor(
+    private modalService: NgbModal,
+    private groupService: GroupService,
+    private userService: UserService,
+    private categoryService: CategoryService
+  ) {
   }
 
   ngOnInit(): void {
@@ -31,7 +34,7 @@ export class GroupsControlComponent implements OnInit {
   fetchAllGroups() {
     this.groupService.getAllGroups().subscribe(
       groups => {
-        this.allGroups = groups;
+        this.allGroupsForInstructor = groups;
       }, error => {
         console.log(error);
       }
@@ -42,7 +45,8 @@ export class GroupsControlComponent implements OnInit {
     let instructors: User[] = [];
     let categories: Category[] = [];
 
-    forkJoin([this.categoryService.getAllCategories(), this.managerService.getAllInstructors()])
+    // TODO refactor to automaticaly assign exsisting user to as selected instructor
+    forkJoin([this.categoryService.getAllCategories(), this.userService.getAllInstructors()])
       .subscribe({
         next: ([categoriesResult, instructorsResult]: [Category[], User[]]) => {
           categories = categoriesResult;
