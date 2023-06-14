@@ -43,7 +43,7 @@ export class GroupsControlComponent implements OnInit {
     let instructors: User[] = [];
     let categories: Category[] = [];
 
-    const isHideSubCategories = false;
+    const isHideSubCategories = false ;
 
     forkJoin([
       this.categoryService.getAllCategories(isHideSubCategories),
