@@ -43,28 +43,28 @@ export class GroupsControlComponent implements OnInit {
     let instructors: User[] = [];
     let categories: Category[] = [];
 
-    forkJoin([this.categoryService.getAllCategories(), this.managerService.getAllInstructors()])
-      .subscribe({
-        next: ([categoriesResult, instructorsResult]: [Category[], User[]]) => {
-          categories = categoriesResult;
-          instructors = instructorsResult;
-        },
-        error: err => console.log(err),
-        complete: () => {
-          const modal = this.modalService.open(CreateGroupModalComponent, {
-            backdrop: 'static',
-            size: 'l'
-          });
-          modal.componentInstance.categories = categories;
-          modal.componentInstance.instructors = instructors;
+    const isHideSubCategories = false;
 
-          modal.result
-            .then(_ => {
-            })
-            .catch(() => {/** do nothing */
-            })
-        }
-      })
+    forkJoin([
+      this.categoryService.getAllCategories(isHideSubCategories),
+      this.managerService.getAllInstructors()
+    ]).subscribe(([categoriesResult, instructorsResult]: [Category[], User[]]) => {
+      categories = categoriesResult;
+      instructors = instructorsResult;
+
+      const modal = this.modalService.open(CreateGroupModalComponent, {
+        backdrop: 'static',
+        size: 'l'
+      });
+      modal.componentInstance.categories = categories;
+      modal.componentInstance.instructors = instructors;
+
+      modal.result
+        .then(_ => {
+        })
+        .catch(() => {
+        });
+    }, error => console.log(error));
   }
 
   updateGroupModal(group: Group) {

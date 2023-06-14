@@ -16,10 +16,21 @@
         <label for="category" class="form-label">Category</label>
         <select id="category" class="form-select" required formControlName="categoryId">
           <option [ngValue]="undefined">--Select--</option>
-          <option *ngFor="let category of categories" [ngValue]="category.id">
-            {{category.name}}
-          </option>
+          <ng-container *ngFor="let category of categories">
+            <option [ngValue]="category.id">{{ category.name }}</option>
+            <ng-container *ngIf="category.subcategories.length > 0">
+              <ng-container *ngTemplateOutlet="recursiveSubcategories; context: { $implicit: category.subcategories }"></ng-container>
+            </ng-container>
+          </ng-container>
         </select>
+        <ng-template #recursiveSubcategories let-subcategories>
+          <ng-container *ngFor="let subcategory of subcategories">
+            <option [ngValue]="subcategory.id">{{ subcategory.name }}</option>
+            <ng-container *ngIf="subcategory.subcategories.length > 0">
+              <ng-container *ngTemplateOutlet="recursiveSubcategories; context: { $implicit: subcategory.subcategories }"></ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-template>
       </div>
       <div class="mb-3">
         <label for="instructor" class="form-label">Instructor</label>

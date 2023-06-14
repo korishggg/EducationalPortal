@@ -76,4 +76,17 @@ export class UsersControlComponent implements OnInit {
       .catch(() => {/** do nothing */
       })
   }
+
+  assignInstructor(userId: number) {
+    this.managerService.assignInstructor(userId.toString()).subscribe(
+      () => {
+        this.approvedUsers = this.approvedUsers.filter(user => user.id !== userId);
+      }, error => {
+        console.log(error);
+      }, () => {
+        this.fetchApprovedUsers();
+      }
+    )
+  }
+
 }
