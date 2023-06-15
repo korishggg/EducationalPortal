@@ -9,12 +9,14 @@ import com.educational.portal.repository.GroupRepository;
 import com.educational.portal.repository.RoleRepository;
 import com.educational.portal.repository.UserRepository;
 import com.educational.portal.util.Constants;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@OpenAPIDefinition
 public class EducationalPortalApplication implements CommandLineRunner {
 
 	private final UserRepository userRepository;
