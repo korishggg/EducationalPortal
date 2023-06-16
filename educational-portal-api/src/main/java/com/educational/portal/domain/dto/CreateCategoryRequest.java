@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Tag(name = "Create Category Request", description = "DTO class for creating a category")
 public class CreateCategoryRequest {
-
-	@NotBlank(message = "category should not be empty")
+	@Schema(description = "The name of the category", required = true, example = "Mathematics")
+	@NotBlank(message = "Category name should not be empty")
 	private String name;
 }
