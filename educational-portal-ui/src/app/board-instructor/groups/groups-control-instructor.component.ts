@@ -4,10 +4,11 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {GroupService} from "../../service/api/group.service";
 import {UserService} from "../../service/api/user.service";
 import {Group} from "../../modules/Group";
-import {CreateGroupModalComponent} from "../../modals/create-group-modal/create-group-modal.component";
+import {CreateGroupModalComponent} from "../../common/modals/create-group-modal/create-group-modal.component";
 import {Category} from "../../modules/Category";
 import {CategoryService} from "../../service/api/category.service";
 import {forkJoin} from "rxjs";
+import {GroupChatModalComponent} from "../../common/modals/group-chat/group-chat-modal.component";
 
 @Component({
   selector: 'app-groups-instructor-control',
@@ -28,11 +29,11 @@ export class GroupsControlInstructorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchAllGroups();
+    this.getAllGroupsForCurrentUser();
   }
 
-  fetchAllGroups() {
-    this.groupService.getAllGroups().subscribe(
+  getAllGroupsForCurrentUser() {
+    this.groupService.getAllGroupsForCurrentUser(true).subscribe(
       groups => {
         this.allGroupsForInstructor = groups;
       }, error => {
@@ -67,5 +68,16 @@ export class GroupsControlInstructorComponent implements OnInit {
         .catch(() => {
         });
     }, error => console.log(error));
+  }
+
+  openChatModal() {
+    const modal = this.modalService.open(GroupChatModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+
+    modal.result
+      .then(_ => {})
+      .catch(() => {})
   }
 }

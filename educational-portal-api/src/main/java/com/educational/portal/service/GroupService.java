@@ -7,6 +7,7 @@ import com.educational.portal.domain.entity.Group;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
 import com.educational.portal.exception.NotAllowedOperationException;
+import com.educational.portal.exception.NotEnoughPermissionException;
 import com.educational.portal.exception.NotFoundException;
 import com.educational.portal.repository.GroupRepository;
 import com.educational.portal.util.Constants;
@@ -32,6 +33,7 @@ public class GroupService {
 		this.userService = userService;
 		this.categoryService = categoryService;
 	}
+
 	public Group findById(Long id) {
 		return groupRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("Group with this id = " + id + " is not found"));
@@ -41,6 +43,22 @@ public class GroupService {
 	public List<GroupDto> getAllGroups() {
 		return groupRepository.findAll()
 				.stream()
+				.map(GroupDto::convertGroupToGroupDto)
+				.collect(Collectors.toList());
+	}
+
+	public List<GroupDto> getGroupsForCurrentUser(Principal principal, boolean isInstructor) {
+		User user = this.userService.findByEmail(principal.getName());
+		List<Group> groups;
+		if (isInstructor) {
+			if (!user.getRole().getName().equals(Constants.INSTRUCTOR_ROLE)) {
+				throw new NotEnoughPermissionException("Current User have`nt Instructor Roles");
+			}
+			groups = groupRepository.findAllByInstructor(user);
+		} else {
+			groups = groupRepository.findAllByUsersContaining(user);
+		}
+		return groups.stream()
 				.map(GroupDto::convertGroupToGroupDto)
 				.collect(Collectors.toList());
 	}

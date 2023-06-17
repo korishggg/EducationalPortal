@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -61,6 +62,22 @@ public class GroupController {
 	@GetMapping
 	public ResponseEntity<List<GroupDto>> getAllGroups() {
 		List<GroupDto> groupDtos = groupService.getAllGroups();
+		return ResponseEntity.ok(groupDtos);
+	}
+
+	@Operation(
+			summary = "Get All Groups for current user",
+			description = "Retrieves all groups. for current user based by isInstructor request parameter",
+			tags = {"groups", "get"})
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = GroupDto.class))}),
+			@ApiResponse(responseCode = "403", description = "Could happen when current user permission roles is not match with the request params"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
+	@GetMapping("/forCurrentUser")
+	public ResponseEntity<List<GroupDto>> getAllGroupsForCurrentUser(Principal principal,
+																	 @RequestParam(value = "isInstructor", required = false, defaultValue = "false") boolean isInstructor) {
+		List<GroupDto> groupDtos = groupService.getGroupsForCurrentUser(principal, isInstructor);
 		return ResponseEntity.ok(groupDtos);
 	}
 

@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {GroupService} from "../../service/api/group.service";
-import {Category} from "../../modules/Category";
-import {User} from "../../modules/User";
+import {GroupService} from "../../../service/api/group.service";
+import {Category} from "../../../modules/Category";
+import {User} from "../../../modules/User";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {CreateGroupRequest} from "../../modules/CreateGroupRequest";
+import {CreateGroupRequest} from "../../../modules/CreateGroupRequest";
 
 @Component({
   selector: 'app-create-group-modal',
