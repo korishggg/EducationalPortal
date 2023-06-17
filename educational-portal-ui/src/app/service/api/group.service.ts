@@ -18,6 +18,10 @@ export class GroupService {
     return this.http.get<Group[]>(GROUP_API_URL)
   }
 
+  getAllGroupsForCurrentUser(isInstructor: boolean): Observable<Group[]> {
+    return this.http.get<Group[]>(GROUP_API_URL + "/forCurrentUser?isInstructor=" + isInstructor)
+  }
+
   createGroup(createGroupRequest: CreateGroupRequest): Observable<any> {
     return this.http.post(GROUP_API_URL + "/", createGroupRequest)
   }

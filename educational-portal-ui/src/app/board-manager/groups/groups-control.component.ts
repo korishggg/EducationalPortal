@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CreateGroupModalComponent} from "../../modals/create-group-modal/create-group-modal.component";
+import {CreateGroupModalComponent} from "../../common/modals/create-group-modal/create-group-modal.component";
 import {Group} from "../../modules/Group";
 import {GroupService} from "../../service/api/group.service";
 import {forkJoin} from "rxjs";

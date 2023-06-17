@@ -1,32 +1,34 @@
 <div class="container">
   <div class="user-board">
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border" role="status">
-      </div>
-    </div>
-    <div *ngIf="!isCurrentUserApproved">
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong *ngIf="!isDocumentsAreLoaded">You need to upload your documents to manager to be able to check them. If
-          everything is fine, you will be approved.</strong>
-        <button class="btn btn-primary me-2" (click)="uploadDocumentsModal()" [disabled]="isDocumentsAreLoaded">
-          Upload Documents
-        </button>
-        <p *ngIf="isDocumentsAreLoaded" class="text-success">
-          <i class="bi bi-check-circle-fill"></i> Documents are uploaded successfully.
-        </p>
-      </div>
-      <div class="alert alert-primary" role="alert" *ngIf="isDocumentsAreLoaded">
-        <h4 class="alert-heading">Current User Is Not Approved Yet</h4>
-        <div>
-          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-          Please wait until the manager reviews your documents.
+    <div class="row">
+
+      <div *ngIf="!isCurrentUserApproved">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong *ngIf="!isDocumentsAreLoaded">You need to upload your documents to manager to be able to check them.
+            If
+            everything is fine, you will be approved.</strong>
+          <button class="btn btn-primary me-2" (click)="uploadDocumentsModal()" [disabled]="isDocumentsAreLoaded">
+            Upload Documents
+          </button>
+          <p *ngIf="isDocumentsAreLoaded" class="text-success">
+            <i class="bi bi-check-circle-fill"></i> Documents are uploaded successfully.
+          </p>
+        </div>
+        <div class="alert alert-primary" role="alert" *ngIf="isDocumentsAreLoaded">
+          <h4 class="alert-heading">Current User Is Not Approved Yet</h4>
+          <div>
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            Please wait until the manager reviews your documents.
+          </div>
         </div>
       </div>
-    </div>
-    <div *ngIf="isCurrentUserApproved">
-      <p class="text-uppercase">User Board</p>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>TBD!</strong> Any Other User Related Logic is Not Implemented Yet!
+
+
+      <div *ngIf="isCurrentUserApproved" class="col-2">
+        ALSO ADD HERE CHAT LINK to the component
+      </div>
+      <div class="col-10">
+        ADD HERE CHAT COMPONENT should be rendered
       </div>
     </div>
   </div>
