@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @AllArgsConstructor
 @Tag(name = "Authentication Request", description = "DTO class for authentication request")
 public class AuthRequest {
+
 	@Schema(description = "The email address", required = true, example = "user@example.com")
 	@NotBlank(message = "Email should not be empty")
 	private String email;

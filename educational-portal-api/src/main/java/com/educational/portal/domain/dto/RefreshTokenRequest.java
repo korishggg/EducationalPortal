@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @AllArgsConstructor
 @Tag(name = "Refresh Token Request", description = "DTO class for refreshing an access token")
 public class RefreshTokenRequest {
+
     @Schema(description = "The refresh token", example = "xxxxxxxxxxxx")
     private String refreshToken;
 }

@@ -28,9 +28,13 @@ public class ResourceController {
 			summary = "Get File by ID",
 			description = "Retrieves a file by its ID.",
 			tags = {"resources", "file"})
-	@ApiResponse(responseCode = "200", description = "Success: File found",
+	@ApiResponse(
+			responseCode = "200",
+			description = "Success: File found",
 			content = {@Content(mediaType = "application/octet-stream")})
-	@ApiResponse(responseCode = "404", description = "File not found")
+	@ApiResponse(
+			responseCode = "404",
+			description = "File not found")
 	@GetMapping("/{id}/file")
 	public ResponseEntity<ByteArrayResource> getFileById(
 			@Parameter(description = "ID of the file to be retrieved")

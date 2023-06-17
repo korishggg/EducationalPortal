@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @AllArgsConstructor
 @Tag(name = "Group DTO", description = "DTO class for representing a group")
 public class GroupDto {
+
 	@Schema(description = "The ID of the group")
 	private Long id;
 

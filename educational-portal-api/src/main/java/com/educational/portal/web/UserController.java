@@ -60,9 +60,15 @@ public class UserController {
 			description = "Retrieves the user information for the authenticated user.",
 			tags = {"users", "userInfo"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Retrieved user info",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDto.class))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Retrieved user info",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDto.class))
+			),
+			@ApiResponse(
+					responseCode = "500",
+					description = "Internal Server Error"
+			)
 	})
 	@GetMapping("/userInfo")
 	public ResponseEntity<UserInfoDto> userInfo(Principal principal) {
@@ -75,9 +81,15 @@ public class UserController {
 			description = "Checks if the current user is approved.",
 			tags = {"users", "approval"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Retrieved current user approval status",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Retrieved current user approval status",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))
+			),
+			@ApiResponse(
+					responseCode = "500",
+					description = "Internal Server Error"
+			)
 	})
 	@GetMapping("/isApproved")
 	public ResponseEntity<Boolean> isCurrentUserApproved(Principal principal) {
@@ -90,14 +102,19 @@ public class UserController {
 			description = "Searches users by email or surname within a specific group.",
 			tags = {"users", "search"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Retrieved matching users",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserNameSurnameEmailDto.class))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Retrieved matching users",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserNameSurnameEmailDto.class))
+			),
+			@ApiResponse(
+					responseCode = "500",
+					description = "Internal Server Error"
+			)
 	})
 	@GetMapping(value = "/search/{groupId}")
-	public ResponseEntity<List<UserNameSurnameEmailDto>> findByEmailOrSurname(
-			@RequestParam(value = "findByEmailOrSurname") String findByEmailOrSurname,
-			@PathVariable Long groupId) {
+	public ResponseEntity<List<UserNameSurnameEmailDto>> findByEmailOrSurname(@RequestParam(value = "findByEmailOrSurname") String findByEmailOrSurname,
+																			  @PathVariable Long groupId) {
 		List<UserNameSurnameEmailDto> users = userService.findUsersByEmailOrLastName(findByEmailOrSurname, groupId);
 		return ResponseEntity.ok(users);
 	}
@@ -107,9 +124,15 @@ public class UserController {
 			description = "Retrieves a list of all instructors.",
 			tags = {"users", "instructors"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Retrieved all instructors",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Retrieved all instructors",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))
+			),
+			@ApiResponse(
+					responseCode = "500",
+					description = "Internal Server Error"
+			)
 	})
 	@GetMapping("/instructors")
 	public ResponseEntity<List<UserDto>> getAllInstructors() {
@@ -128,10 +151,9 @@ public class UserController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error")
 	})
 	@PostMapping("/uploadDocuments")
-	public ResponseEntity<String> uploadData(
-			Principal principal,
-			@RequestParam(value = "passportFiles") MultipartFile[] passportFiles,
-			@RequestParam(value = "taxIdFiles") MultipartFile[] taxIdFiles) {
+	public ResponseEntity<String> uploadData(Principal principal,
+											 @RequestParam(value = "passportFiles") MultipartFile[] passportFiles,
+											 @RequestParam(value = "taxIdFiles") MultipartFile[] taxIdFiles) {
 		try {
 			userService.uploadData(principal, passportFiles, taxIdFiles);
 			return ResponseEntity.ok("Files uploaded successfully");
@@ -149,8 +171,11 @@ public class UserController {
 			description = "Checks if there is a resource exists for the authenticated user.",
 			tags = {"users", "resources"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Resource exists",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Resource exists",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))
+			)
 	})
 	@GetMapping("/documentsExists")
 	public boolean isResourceExistsForUser(Principal principal) {
@@ -162,9 +187,15 @@ public class UserController {
 			description = "Retrieves all resources for a user by their ID.",
 			tags = {"users", "resources"})
 	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Success: Retrieved all resources for user",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceDto.class))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			@ApiResponse(
+					responseCode = "200",
+					description = "Success: Retrieved all resources for user",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceDto.class))
+			),
+			@ApiResponse(
+					responseCode = "500",
+					description = "Internal Server Error"
+			)
 	})
 	@GetMapping("/{userId}/resources")
 	public ResponseEntity<List<ResourceDto>> getAllResourcesForUser(@PathVariable Long userId) {

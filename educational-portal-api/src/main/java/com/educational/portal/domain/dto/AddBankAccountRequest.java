@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Bank Account Request", description = "Dto class for requesting adding bank account")
 public class AddBankAccountRequest {
+
     @Schema(description = "The IBAN (International Bank Account Number)", required = true, example = "DE89370400440532013000")
     @Iban
     @NotBlank(message = "Your bank account cannot be empty")

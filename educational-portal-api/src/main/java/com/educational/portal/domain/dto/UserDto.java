@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Tag(name = "User DTO", description = "DTO class for a user")
 public class UserDto {
+
     @Schema(description = "The ID of the user")
     private Long id;
 

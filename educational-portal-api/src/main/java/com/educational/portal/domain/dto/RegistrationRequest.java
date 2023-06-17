@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 @Tag(name = "Registration Request", description = "DTO class for user registration")
 public class RegistrationRequest {
+
 	@Schema(description = "The first name of the user", required = true, example = "John")
 	@NotBlank(message = "First name should not be null or empty")
 	private String firstName;

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @AllArgsConstructor
 @Tag(name = "Create Group Request", description = "DTO class for creating a group")
 public class CreateGroupRequest {
+
     @Schema(description = "The name of the group", required = true, example = "Group A")
     @NotBlank(message = "Group name should not be empty")
     private String name;

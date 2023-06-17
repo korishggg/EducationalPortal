@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @AllArgsConstructor
 @Tag(name = "Category DTO", description = "DTO class for representing a category")
 public class CategoryDto {
+
 	@Schema(description = "The ID of the category")
 	private Long id;
 
