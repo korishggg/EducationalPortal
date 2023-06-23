@@ -13,6 +13,9 @@ import {GroupsControlComponent} from "./board-manager/groups/groups-control.comp
 import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
 import {CategoriesControlComponent} from "./board-manager/categories/categories-control.component";
 import {AdminUsersControlComponent} from "./board-admin/users/admin-users-control.component";
+import {
+  GroupsChatControlInstructorComponent
+} from "./board-instructor/groups-chat/groups-chat-control-instructor.component";
 
 // TODO split child routings and import them
 const routes: Routes = [
@@ -45,6 +48,10 @@ const routes: Routes = [
       {
         path: 'groups',
         component: GroupsControlInstructorComponent
+      },
+      {
+        path: 'groupsChat',
+        component: GroupsChatControlInstructorComponent
       }
     ]
   },

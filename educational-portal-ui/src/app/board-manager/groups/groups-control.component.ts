@@ -8,10 +8,10 @@ import {CategoryService} from "../../service/api/category.service";
 import {ManagerService} from "../../service/api/manager.service";
 import {Category} from "../../modules/Category";
 import {User} from "../../modules/User";
-import {UpdateGroupModalComponent} from "./add-user-to-group-modal/update-group-modal.component";
 import {
   ConfirmationDeleteGroupModalComponent
 } from "./confirmation-delete-group-modal/confirmation-delete-group-modal.component";
+import {UpdateGroupModalComponent} from "../../common/modals/add-user-to-group-modal/update-group-modal.component";
 
 @Component({
   selector: 'app-groups-control',

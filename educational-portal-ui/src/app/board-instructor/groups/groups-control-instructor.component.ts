@@ -9,10 +9,14 @@ import {Category} from "../../modules/Category";
 import {CategoryService} from "../../service/api/category.service";
 import {forkJoin} from "rxjs";
 import {GroupChatModalComponent} from "../../common/modals/group-chat/group-chat-modal.component";
+import {
+  UpdateGroupModalComponent
+} from "../../common/modals/add-user-to-group-modal/update-group-modal.component";
 
 @Component({
   selector: 'app-groups-instructor-control',
-  templateUrl: './groups-control-instructor.component.html'
+  templateUrl: './groups-control-instructor.component.html',
+  entryComponents: [UpdateGroupModalComponent]
 })
 export class GroupsControlInstructorComponent implements OnInit {
   allGroupsForInstructor: Group[] = [];
@@ -80,4 +84,21 @@ export class GroupsControlInstructorComponent implements OnInit {
       .then(_ => {})
       .catch(() => {})
   }
+
+  openUpdateGroupModal(group: Group) {
+    const modal = this.modalService.open(UpdateGroupModalComponent, {
+      backdrop: 'static',
+      size: 'l'
+    });
+
+    const updateGroupModalComponent = modal.componentInstance as UpdateGroupModalComponent;
+    updateGroupModalComponent.group = group;
+
+    modal.result
+      .then(_ => {
+        this.getAllGroupsForCurrentUser(); // Refresh the groups after updating
+      })
+      .catch(() => { /** do nothing */ });
+  }
+
 }

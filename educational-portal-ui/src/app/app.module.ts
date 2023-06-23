@@ -20,7 +20,7 @@ import { UploadDocumentsModalComponent } from "./board-user/upload-documents-mod
 import {ViewDocumentsModalComponent} from "./board-manager/users/view-documents-modal/view-documents-modal.component";
 import {CreateGroupModalComponent} from "./common/modals/create-group-modal/create-group-modal.component";
 import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
-import {UpdateGroupModalComponent} from "./board-manager/groups/add-user-to-group-modal/update-group-modal.component";
+import {UpdateGroupModalComponent} from "./common/modals/add-user-to-group-modal/update-group-modal.component";
 import {GroupChatModalComponent} from "./common/modals/group-chat/group-chat-modal.component";
 import {CategoriesControlComponent} from "./board-manager/categories/categories-control.component";
 import {
@@ -42,6 +42,10 @@ import {
 import {
   AssignManagerConfirmationModalComponent
 } from "./board-admin/users/assign-manager-confirmation-modal/assign-manager-confirmation-modal.component";
+import {
+  GroupsChatControlInstructorComponent
+} from "./board-instructor/groups-chat/groups-chat-control-instructor.component";
+import {WebSocketService} from "./service/api/websocket.service";
 
 @NgModule({
   declarations: [
@@ -69,7 +73,8 @@ import {
     ConfirmationDeleteGroupModalComponent,
     AdminUsersControlComponent,
     DeleteUserConfirmationModalComponent,
-    AssignManagerConfirmationModalComponent
+    AssignManagerConfirmationModalComponent,
+    GroupsChatControlInstructorComponent
   ],
   imports: [
     HttpClientModule,
@@ -78,7 +83,9 @@ import {
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [authInterceptorProviders],
-  bootstrap: [AppComponent]
+  providers: [authInterceptorProviders,
+              WebSocketService
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
