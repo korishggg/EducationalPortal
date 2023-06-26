@@ -4,6 +4,7 @@ import {WebSocketService} from "../../../service/api/websocket.service";
 import {GroupService} from "../../../service/api/group.service";
 import {Group} from "../../../modules/Group";
 import {TokenStorageService} from "../../../service/token-storage.service";
+import {User} from "../../../modules/User";
 import {UserService} from "../../../service/api/user.service";
 import {CreateGroupMessageRequest} from "../../../modules/CreateGroupMessageRequest";
 import {GroupMessageResponse} from "../../../modules/GroupMessageResponse";
