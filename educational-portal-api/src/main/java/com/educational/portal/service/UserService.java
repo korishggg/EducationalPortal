@@ -276,4 +276,9 @@ public class UserService {
 		User user = findUserById(userId);
 		userRepository.delete(user);
 	}
+	public boolean isUserAssignedToAnyGroup(Principal principal) {
+		User user = this.findByEmail(principal.getName());
+		return !user.getGroups().isEmpty();
+	}
+
 }

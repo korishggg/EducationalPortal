@@ -14,6 +14,7 @@ public class MessageResponseDto {
 	private Long userId;
 	private String userFirstName;
 	private String userLastName;
+	private String timeStamp;
 
 	public static MessageResponseDto convertMessageToMessageDto(Message message) {
 		return new MessageResponseDto(
@@ -21,7 +22,8 @@ public class MessageResponseDto {
 				message.getGroup().getId(),
 				message.getCreatedBy().getId(),
 				message.getCreatedBy().getFirstName(),
-				message.getCreatedBy().getLastName()
+				message.getCreatedBy().getLastName(),
+				message.getTimeStamp().toString()
 		);
 	}
 }

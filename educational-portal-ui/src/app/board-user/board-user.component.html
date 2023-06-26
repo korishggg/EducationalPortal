@@ -22,13 +22,38 @@
           </div>
         </div>
       </div>
+      <div *ngIf="isCurrentUserApproved" class="col-12">
+        <p *ngIf="!isAssignedToAnyGroup" class="text-success">
+    <span class="d-inline-block h4">
+      <i class="bi bi-check-circle-fill"></i>
+      Your documents were approved by the manager.  Please wait until you are added to a group.
+    </span>
+        </p>
+        <div class="col-10">
+          <div class="user-button-options" *ngIf="isAssignedToAnyGroup">
+            <h2>Groups:</h2>
+            <div class="group-controls-table">
+              <table class="table">
+                <thead>
+                <tr>
 
+                  <th scope="col">Group Name</th>
+                  <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let group of groups">
+                  <td>{{group.name}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-primary" (click)="openChatModal(group)">Group Chat</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-      <div *ngIf="isCurrentUserApproved" class="col-2">
-        ALSO ADD HERE CHAT LINK to the component
-      </div>
-      <div class="col-10">
-        ADD HERE CHAT COMPONENT should be rendered
       </div>
     </div>
   </div>

@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Group Members</h4>
+</div>
+<div class="modal-body">
+<ul class="list-group">
+  <li *ngFor="let user of group.users" class="list-group-item">
+    {{ user.firstName }} - {{ user.lastName }}
+  </li>
+</ul>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+</div>

@@ -44,8 +44,8 @@ public class MessageService {
 		}
 	}
 
-	public List<MessageResponseDto> findAllLimitPageForCurrentGroup(Long groupId) {
-		Pageable firstPageWithTenElements = PageRequest.of(0, 10);
+	public List<MessageResponseDto> findAllLimitPageForCurrentGroup(Long groupId, int page, int pageSize) {
+		Pageable firstPageWithTenElements = PageRequest.of(page, pageSize);
 		return messageRepository.findAllByGroupId(groupId, firstPageWithTenElements)
 				.stream()
 				.map(MessageResponseDto::convertMessageToMessageDto)

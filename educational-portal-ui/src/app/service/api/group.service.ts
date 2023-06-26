@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Group} from "../../modules/Group";
 import {CreateGroupRequest} from "../../modules/CreateGroupRequest";
@@ -39,8 +39,8 @@ export class GroupService {
     return this.http.delete(GROUP_API_URL + "/" + groupId);
   }
 
-  getMessagesByGroupId(groupId: number): Observable<GroupMessageResponse[]> {
-    return this.http.get<GroupMessageResponse[]>(GROUP_API_URL + "/" + groupId + "/messages")
+  getMessagesByGroupId(groupId: number, page: number, pageSize: number): Observable<GroupMessageResponse[]> {
+    return this.http.get<GroupMessageResponse[]>(GROUP_API_URL + "/" + groupId + "/messages?page=" + page + "&pageSize=" + pageSize);
   }
 }
 

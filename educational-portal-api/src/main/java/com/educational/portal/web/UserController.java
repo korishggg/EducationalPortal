@@ -209,4 +209,8 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@GetMapping("/groupExists")
+	public boolean isUserAssignedToAnyGroup(Principal principal) {
+		return userService.isUserAssignedToAnyGroup(principal);
+	}
 }

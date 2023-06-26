@@ -182,15 +182,18 @@ public class GroupController {
 		return ResponseEntity.ok("");
 	}
 
-	@MessageMapping("/sendMessage")
-	@SendTo("/topic/groupMessages")
+	@MessageMapping("/sendMessage/{groupId}")
+	@SendTo("/topic/groupMessages/{groupId}")
 	public MessageResponseDto sendMessageToGroup(MessageRequestDto groupMessageDto) {
 		return messageService.sendMessage(groupMessageDto);
 	}
 
 	@GetMapping("/{groupId}/messages")
-	public ResponseEntity<List<MessageResponseDto>> getMessagesForGroup(@PathVariable(name = "groupId") Long groupId) {
-		List<MessageResponseDto> messages = messageService.findAllLimitPageForCurrentGroup(groupId);
+	public ResponseEntity<List<MessageResponseDto>> getMessagesForGroup(@PathVariable(name = "groupId") Long groupId,
+																		@RequestParam("page") int page,
+																		@RequestParam("pageSize") int pageSize
+	) {
+		List<MessageResponseDto> messages = messageService.findAllLimitPageForCurrentGroup(groupId, page, pageSize);
 		return ResponseEntity.ok(messages);
 	}
 

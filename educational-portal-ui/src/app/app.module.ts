@@ -46,6 +46,9 @@ import {
   GroupsChatControlInstructorComponent
 } from "./board-instructor/groups-chat/groups-chat-control-instructor.component";
 import {WebSocketService} from "./service/api/websocket.service";
+import {
+  MembersOfTheGroupForChatComponent
+} from "./common/modals/members-of-the-group-for-chat/members-of-the-group-for-chat.component";
 
 @NgModule({
   declarations: [
@@ -74,7 +77,8 @@ import {WebSocketService} from "./service/api/websocket.service";
     AdminUsersControlComponent,
     DeleteUserConfirmationModalComponent,
     AssignManagerConfirmationModalComponent,
-    GroupsChatControlInstructorComponent
+    GroupsChatControlInstructorComponent,
+    MembersOfTheGroupForChatComponent
   ],
   imports: [
     HttpClientModule,
