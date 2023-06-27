@@ -1,0 +1,80 @@
+<div class="user-controls">
+  <div class="user-button-options">
+    <button type="button"
+            class="btn"
+            [class.btn-primary]="showCategories"
+            [class.btn-outline-primary]="!showCategories"
+            (click)="fetchAllCategories()">
+      Categories
+    </button>
+    <button type="button"
+            class="btn ml-20"
+            [class.btn-primary]="!showCategories"
+            [class.btn-outline-primary]="showCategories"
+            (click)="fetchAllSubCategories()">
+      Subcategories
+    </button>
+  </div>
+
+  <div class="user-controls-table">
+
+    <div *ngIf="isLoading else loaded" class="text-center">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+
+    <ng-template #loaded>
+      <div *ngIf="showCategories else showSubcategories" class="alerts-info">
+        <div *ngIf="allCategories.length == 0" class="alert alert-primary" role="alert">
+          <p>No categories available!</p>
+        </div>
+      </div>
+      <ng-template #showSubcategories>
+        <div *ngIf="subCategories.length == 0" class="alert alert-primary" role="alert">
+          <p>No subcategories available!</p>
+        </div>
+      </ng-template>
+      <div *ngIf="(allCategories.length > 0 && showCategories) || (subCategories.length > 0 && !showCategories)">
+        <h2>{{ showCategories ? 'Categories' : 'SubCategories' }}:</h2>
+        <button *ngIf="showCategories" class="btn btn-success me-2" (click)="openCreateCategoryModal()">
+          Create Category
+        </button>
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Category Name</th>
+            <ng-container *ngIf="!showCategories">
+              <th scope="col">Parent Name</th>
+            </ng-container>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody *ngIf="showCategories">
+          <tr *ngFor="let category of allCategories">
+            <th scope="row">{{category.id}}</th>
+            <td>{{category.name}}</td>
+            <td></td>
+            <td>
+              <button class="btn btn-primary" (click)="openAssignSubCategoryModal(category)">Make it SubCategory</button>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="openConfirmationModal(category.id)">
+                Delete Category
+              </button>
+            </td>
+          </tr>
+          </tbody>
+          <tbody *ngIf="!showCategories">
+          <tr *ngFor="let subCategory of subCategories">
+            <th scope="row">{{subCategory.id}}</th>
+            <td>{{subCategory.name}}</td>
+            <td>{{subCategory.parentName}}</td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </div>
+</div>

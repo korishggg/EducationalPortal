@@ -2,6 +2,7 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.CategoryDto;
 import com.educational.portal.domain.dto.CreateCategoryRequest;
+import com.educational.portal.domain.dto.SubCategoryDto;
 import com.educational.portal.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -114,5 +115,11 @@ public class CategoryController {
 	public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategoryById(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/subCategories")
+	public ResponseEntity<List<SubCategoryDto>> getAllSubCategories() {
+		List<SubCategoryDto> subCategories = categoryService.getAllSubCategories();
+		return ResponseEntity.ok(subCategories);
 	}
 }

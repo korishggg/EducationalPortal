@@ -1,0 +1,21 @@
+<form (ngSubmit)="createCategory()" [formGroup]="createCategoryForm">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Create Category</h4>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12">
+      <div class="mb-3">
+        <label for="name" class="form-label">Category name</label>
+        <input id="name"
+               type="text"
+               class="form-control"
+               placeholder="Enter category name"
+               formControlName="name">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn btn-secondary" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!createCategoryForm.valid">Create Category</button>
+    </div>
+  </div>
+</form>

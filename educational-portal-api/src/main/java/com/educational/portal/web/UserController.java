@@ -15,13 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -201,6 +195,18 @@ public class UserController {
 	public ResponseEntity<List<ResourceDto>> getAllResourcesForUser(@PathVariable Long userId) {
 		List<ResourceDto> resources = resourceService.getAllResourcesForUser(userId);
 		return ResponseEntity.ok(resources);
+	}
+
+	@GetMapping("/usersInfo")
+	public ResponseEntity<List<UserInfoDto>> getAllUsersInfo() {
+		List<UserInfoDto> userInfoDtos = userService.findUserInfos();
+		return ResponseEntity.ok(userInfoDtos);
+	}
+
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+		userService.deleteUser(userId);
+		return ResponseEntity.noContent().build();
 	}
 
 }

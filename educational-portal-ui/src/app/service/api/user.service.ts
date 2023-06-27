@@ -54,4 +54,11 @@ export class UserService {
     return this.http.get<User[]>(API_URL+ 'instructors')
   }
 
+  getAllUsersInfo(): Observable<UserInfo[]> {
+    return this.http.get<UserInfo[]>(API_URL + "usersInfo")
+  }
+  deleteUser(userId: number): Observable<any> {
+    return  this.http.delete(API_URL + userId)
+  }
+
 }

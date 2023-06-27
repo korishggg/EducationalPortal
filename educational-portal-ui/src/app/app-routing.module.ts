@@ -11,6 +11,8 @@ import {ProfileComponent} from "./profile/profile.component";
 import {UsersControlComponent} from "./board-manager/users/users-control.component";
 import {GroupsControlComponent} from "./board-manager/groups/groups-control.component";
 import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
+import {CategoriesControlComponent} from "./board-manager/categories/categories-control.component";
+import {AdminUsersControlComponent} from "./board-admin/users/admin-users-control.component";
 
 // TODO split child routings and import them
 const routes: Routes = [
@@ -30,6 +32,10 @@ const routes: Routes = [
       {
         path: 'groups',
         component: GroupsControlComponent
+      },
+      {
+        path: 'categories',
+        component: CategoriesControlComponent
       }
     ]
   },
@@ -42,7 +48,15 @@ const routes: Routes = [
       }
     ]
   },
-  {path: 'admin', component: BoardAdminComponent},
+  {
+    path: 'admin', component: BoardAdminComponent,
+    children: [
+      {
+        path: 'users',
+        component: AdminUsersControlComponent
+      }
+    ]
+  },
   {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
