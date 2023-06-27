@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {GroupService} from "../../../service/api/group.service";
 import {Category} from "../../../modules/Category";
@@ -43,6 +43,7 @@ export class CreateGroupModalComponent {
         },
         () => {
           this.closeModal();
+          window.location.reload();
         });
   }
 }

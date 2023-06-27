@@ -22,6 +22,26 @@ import {CreateGroupModalComponent} from "./common/modals/create-group-modal/crea
 import {GroupsControlInstructorComponent} from "./board-instructor/groups/groups-control-instructor.component";
 import {UpdateGroupModalComponent} from "./board-manager/groups/add-user-to-group-modal/update-group-modal.component";
 import {GroupChatModalComponent} from "./common/modals/group-chat/group-chat-modal.component";
+import {CategoriesControlComponent} from "./board-manager/categories/categories-control.component";
+import {
+  CreateCategoryModalComponent
+} from "./board-manager/categories/create-category-modal/create-category-modal.component";
+import {
+  AssignSubcategoryModalComponent
+} from "./board-manager/categories/assign-subcategory-modal/assign-subcategory-modal.component";
+import {
+  ConfirmationDeleteCategoryModalComponent
+} from "./board-manager/categories/confirmation-delete-category-modal/confirmation-delete-category-modal.component";
+import {
+  ConfirmationDeleteGroupModalComponent
+} from "./board-manager/groups/confirmation-delete-group-modal/confirmation-delete-group-modal.component";
+import {AdminUsersControlComponent} from "./board-admin/users/admin-users-control.component";
+import {
+  DeleteUserConfirmationModalComponent
+} from "./board-admin/users/delete-user-confirmation-modal/delete-user-confirmation-modal.component";
+import {
+  AssignManagerConfirmationModalComponent
+} from "./board-admin/users/assign-manager-confirmation-modal/assign-manager-confirmation-modal.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +62,14 @@ import {GroupChatModalComponent} from "./common/modals/group-chat/group-chat-mod
     GroupsControlInstructorComponent,
     UpdateGroupModalComponent,
     GroupChatModalComponent,
+    CategoriesControlComponent,
+    CreateCategoryModalComponent,
+    AssignSubcategoryModalComponent,
+    ConfirmationDeleteCategoryModalComponent,
+    ConfirmationDeleteGroupModalComponent,
+    AdminUsersControlComponent,
+    DeleteUserConfirmationModalComponent,
+    AssignManagerConfirmationModalComponent
   ],
   imports: [
     HttpClientModule,

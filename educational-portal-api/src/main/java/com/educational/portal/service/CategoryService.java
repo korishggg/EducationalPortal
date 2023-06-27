@@ -2,6 +2,7 @@ package com.educational.portal.service;
 
 import com.educational.portal.domain.dto.CategoryDto;
 import com.educational.portal.domain.dto.CreateCategoryRequest;
+import com.educational.portal.domain.dto.SubCategoryDto;
 import com.educational.portal.domain.entity.Category;
 import com.educational.portal.domain.entity.User;
 import com.educational.portal.exception.AlreadyExistsException;
@@ -99,6 +100,13 @@ public class CategoryService {
 	public void deleteCategoryById(Long id) {
 		Category category = findById(id);
 		categoryRepository.delete(category);
+	}
+
+	public List<SubCategoryDto> getAllSubCategories() {
+		return categoryRepository.findCategoriesByParentIsNotNull()
+				.stream()
+				.map(SubCategoryDto::convertSubCategoryToSubCategoryDtoWithoutDuplication)
+				.toList();
 	}
 
 }

@@ -1,11 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-board-admin',
   templateUrl: './board-admin.component.html',
   styleUrls: ['./board-admin.component.scss']
 })
-export class BoardAdminComponent {
+export class BoardAdminComponent implements OnInit{
 
-  // TODO IMPLEMENT Admin RELATED LOGIC
+  constructor(private router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.router.navigate(["admin/users"])
+  }
+
 }

@@ -13,6 +13,9 @@ export class BoardManagerComponent implements OnInit {
 
   ngOnInit(): void {
     // TODO LATER IMPLEMENT AUTO REDIRECT TO USERS CONTROL COMPONENT
-    this.router.navigate(["manager/users"])
+    // this.router.navigate(["manager/users"])
+  }
+  isRouteActive(routeSegment: string): boolean {
+    return this.router.url.includes(`/${routeSegment}`);
   }
 }

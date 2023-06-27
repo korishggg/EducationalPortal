@@ -9,6 +9,9 @@ import {ManagerService} from "../../service/api/manager.service";
 import {Category} from "../../modules/Category";
 import {User} from "../../modules/User";
 import {UpdateGroupModalComponent} from "./add-user-to-group-modal/update-group-modal.component";
+import {
+  ConfirmationDeleteGroupModalComponent
+} from "./confirmation-delete-group-modal/confirmation-delete-group-modal.component";
 
 @Component({
   selector: 'app-groups-control',
@@ -43,7 +46,7 @@ export class GroupsControlComponent implements OnInit {
     let instructors: User[] = [];
     let categories: Category[] = [];
 
-    const isHideSubCategories = false ;
+    const isHideSubCategories = true ;
 
     forkJoin([
       this.categoryService.getAllCategories(isHideSubCategories),
@@ -76,6 +79,20 @@ export class GroupsControlComponent implements OnInit {
     const updateGroupModalComponent = modal.componentInstance as UpdateGroupModalComponent;
     updateGroupModalComponent.group = group;
 
+    modal.result
+      .then(_ => {
+        this.fetchAllGroups()
+      })
+      .catch(() => {/** do nothing */
+      })
+  }
+
+  openConfirmationModal(groupId: number) {
+    const modal = this.modalService.open(ConfirmationDeleteGroupModalComponent, {
+      backdrop: 'static',
+      size: 's'
+    });
+    modal.componentInstance.group = {id: groupId};
     modal.result
       .then(_ => {
         this.fetchAllGroups()

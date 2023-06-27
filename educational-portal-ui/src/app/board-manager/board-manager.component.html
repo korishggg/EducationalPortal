@@ -1,15 +1,19 @@
 <div class="container">
-
   <div class="manager-board">
     <div class="row">
       <div class="col-2">
         <ul class="nav flex-column nav-pills">
           <li class="nav-item">
-            <a class="nav-link" routerLink="./users" routerLinkActive="active" >Users</a>
+            <a class="nav-link" routerLink="./users" routerLinkActive="active"
+               [ngClass]="{ active: isRouteActive('users') }">Users</a>
           </li>
-<!--           TODO LATER REFACTOR THIS SHIT WE SHOULD BE ABLE TO CREATE COMMON COMPONENET OR CREATE SPECIFIC FOR MANAGER-->
           <li class="nav-item">
-            <a class="nav-link" routerLink="./groups" routerLinkActive="active">Groups</a>
+            <a class="nav-link" routerLink="./groups" routerLinkActive="active"
+               [ngClass]="{ active: isRouteActive('groups') }">Groups</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="./categories" routerLinkActive="active"
+               [ngClass]="{ active: isRouteActive('categories') }">Categories</a>
           </li>
         </ul>
       </div>
@@ -20,4 +24,3 @@
     </div>
   </div>
 </div>
-

@@ -265,4 +265,15 @@ public class UserService {
 				.collect(Collectors.toList());
 	}
 
+	public List<UserInfoDto> findUserInfos() {
+		return userRepository.findAll()
+				.stream()
+				.map(UserInfoDto::convertUserToUserDto)
+				.collect(Collectors.toList());
+	}
+
+	public void deleteUser(Long userId) {
+		User user = findUserById(userId);
+		userRepository.delete(user);
+	}
 }
