@@ -50,8 +50,11 @@ export class UserService {
     return this.http.get<Resource[]>(API_URL + userId + "/resources");
   }
 
-  getAllInstructors() :Observable<User[]> {
-    return this.http.get<User[]>(API_URL+ 'instructors')
+  getAllInstructors(): Observable<User[]> {
+    return this.http.get<User[]>(API_URL + 'instructors');
+  }
+  isCurrentUserAssignedToAnyGroup(): Observable<boolean> {
+    return this.http.get<boolean>(API_URL+ "groupExists");
   }
 
   getAllUsersInfo(): Observable<UserInfo[]> {

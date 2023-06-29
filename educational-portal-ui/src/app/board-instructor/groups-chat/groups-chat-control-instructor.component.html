@@ -1,7 +1,4 @@
 <div class="user-button-options">
-  <button class="btn btn-primary me-2" (click)="openCreateGroupModal()">
-    Create Group
-  </button>
   <h2>Groups:</h2>
   <div class="group-controls-table">
     <table class="table">
@@ -9,8 +6,6 @@
       <tr>
         <th scope="col">id</th>
         <th scope="col">Group Name</th>
-        <th scope="col">Category</th>
-        <th scope="col">Instructor</th>
         <th scope="col"></th>
       </tr>
       </thead>
@@ -18,10 +13,8 @@
       <tr *ngFor="let group of allGroupsForInstructor">
         <th scope="row">{{group.id}}</th>
         <td>{{group.name}}</td>
-        <td>{{group.category.name}}</td>
-        <td>{{group.instructor ? group.instructor.email : ''}}</td>
         <td>
-          <button type="submit" class="btn btn-primary" (click)="openUpdateGroupModal(group)">List of users</button>
+          <button type="submit" class="btn btn-primary" (click)="openChatModal(group)">Group Chat</button>
         </td>
       </tr>
       </tbody>

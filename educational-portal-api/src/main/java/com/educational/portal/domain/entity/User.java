@@ -1,12 +1,14 @@
 package com.educational.portal.domain.entity;
 
 import com.educational.portal.validation.ContactNumberConstraint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -40,8 +42,18 @@ public class User extends BaseEntity {
 	@Column(name = "IBAN")
 	private String iban;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "createdBy")
+	private List<Message> messages;
+
 	public User() {
 		super();
+	}
+
+	public User(String firstName, String lastName, List<Message> messages) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.messages = messages;
 	}
 
 	public User(String firstName, String lastName, String password, String email, String phone, Role role) {
@@ -130,5 +142,17 @@ public class User extends BaseEntity {
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
+	}
+
+	public void setApproved(boolean approved) {
+		isApproved = approved;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 }

@@ -26,9 +26,6 @@
         <ng-template #recursiveSubcategories let-subcategories>
           <ng-container *ngFor="let subcategory of subcategories">
             <option [ngValue]="subcategory.id">{{ subcategory.name }}</option>
-            <ng-container *ngIf="subcategory.subcategories.length > 0">
-              <ng-container *ngTemplateOutlet="recursiveSubcategories; context: { $implicit: subcategory.subcategories }"></ng-container>
-            </ng-container>
           </ng-container>
         </ng-template>
       </div>

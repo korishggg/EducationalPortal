@@ -1,5 +1,6 @@
 package com.educational.portal.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class Category extends BaseEntity {
 	@JoinColumn(name = "parent_id")
 	private Category parent;
 
+	@JsonIgnoreProperties("parent")
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Category> subCategories = new ArrayList<>();
 

@@ -29,10 +29,10 @@ export class CreateGroupModalComponent {
   }
 
   createGroup(): void {
-    const name = this.createGroupForm.value.name as string;
-    const categoryId = this.createGroupForm.value.categoryId as number;
-    const instructorId: number = this.createGroupForm.value.instructorId as number;
-    const createGroupRequest = new CreateGroupRequest(name, categoryId, instructorId);
+    const name = this.createGroupForm.controls.name.value as string;
+    const categoryId = this.createGroupForm.controls.categoryId.value as number;
+    const instructorId: number = this.createGroupForm.controls.instructorId.value as number;
+      const createGroupRequest = new CreateGroupRequest(name, categoryId, instructorId)
 
     this.groupService.createGroup(createGroupRequest)
       .subscribe(

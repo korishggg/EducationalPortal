@@ -2,8 +2,11 @@ package com.educational.portal.web;
 
 import com.educational.portal.domain.dto.CreateGroupRequest;
 import com.educational.portal.domain.dto.GroupDto;
+import com.educational.portal.messaging.dto.MessageResponseDto;
 import com.educational.portal.domain.entity.Group;
+import com.educational.portal.messaging.dto.MessageRequestDto;
 import com.educational.portal.service.GroupService;
+import com.educational.portal.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,6 +14,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +37,11 @@ import java.util.List;
 @RequestMapping("/groups")
 public class GroupController {
 	private final GroupService groupService;
+	private final MessageService messageService;
 
-	public GroupController(GroupService groupService) {
+	public GroupController(GroupService groupService, MessageService messageService, SimpMessagingTemplate messagingTemplate) {
 		this.groupService = groupService;
+		this.messageService = messageService;
 	}
 
 	@Operation(
@@ -173,4 +181,20 @@ public class GroupController {
 		groupService.unAssignUserFromGroup(groupId, userId);
 		return ResponseEntity.ok("");
 	}
+
+	@MessageMapping("/sendMessage/{groupId}")
+	@SendTo("/topic/groupMessages/{groupId}")
+	public MessageResponseDto sendMessageToGroup(MessageRequestDto groupMessageDto) {
+		return messageService.sendMessage(groupMessageDto);
+	}
+
+	@GetMapping("/{groupId}/messages")
+	public ResponseEntity<List<MessageResponseDto>> getMessagesForGroup(@PathVariable(name = "groupId") Long groupId,
+																		@RequestParam("page") int page,
+																		@RequestParam("pageSize") int pageSize
+	) {
+		List<MessageResponseDto> messages = messageService.findAllLimitPageForCurrentGroup(groupId, page, pageSize);
+		return ResponseEntity.ok(messages);
+	}
+
 }

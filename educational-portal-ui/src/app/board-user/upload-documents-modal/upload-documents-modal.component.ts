@@ -41,6 +41,8 @@ export class UploadDocumentsModalComponent {
       },
       error => {
         console.error('Error occurred during file upload.', error);
+      }, () => {
+        window.location.reload();
       }
     );
     this.modal.close();
