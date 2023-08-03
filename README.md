@@ -1,1 +1,1 @@
-# SamsungPortal
+# Educational Portal
